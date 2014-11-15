@@ -99,22 +99,18 @@
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/masonry.pkgd.min.js"></script>
-    <script src="assets/js/imagesloaded.js"></script>
-    <script src="assets/js/classie.js"></script>
-    <script src="assets/js/AnimOnScroll.js"></script>
-    <script src="assets/js/mailchimp.js"></script>
-    <script src="assets/js/retina.min.js"></script>
     <script src="assets/js/typed.js"></script>
   
   <script>
   var latVal;
   var longVal;
   var newLength;
-    
     $(document).ready(function() {
-      var words = ["I", "enjoy", "eating", "poop", "on", "the", "side", "Oh", "yes", "I", "do", "sdsadfjkljlk"]
-      var colors = ["#00CC99", "#FFD119","#000066","#33CC33","#0066FF","#990099"]
+      var username = "sample321";
+      var relevant = "sample";
+      var sentence = "I enjoy eating poop on the side oh yes I do";
+
+      var colors = ["#00CC99", "#FFD119","#000066","#33CC33","#0066FF","#990099"];
       var colIndex = 0;
       
       var isUsername = true;
@@ -123,16 +119,7 @@
           var locator = navigator.geolocation.getCurrentPosition(showPosition);
       } else { }
 
-      var newLength = "";
-      for (i = 0; i < words.length; i++) {
-        for (j = 0; j < words[i].length; j++)  {
-          newLength += words[i][j];
-        } 
-        if (i != words.length - 1) {
-          spacer = " ";
-          newLength += spacer;
-        }
-      }
+      var newLength = relevant.toUpperCase() + " " + sentence;
 
       $.ajax({
         url: "/yo/location",
@@ -145,7 +132,7 @@
       });
 
       $("#attendeeNoun").typed({
-        strings: [newLength.toUpperCase()],
+        strings: [newLength],
         typeSpeed: 20,
         backSpeed: 50,
         startDelay: 0,
@@ -160,7 +147,7 @@
   function showPosition(position) {
       latVal = position.coords.latitude;
       longVal = position.coords.longitude;  
-  }
+  } 
 
     showLogin = function(){
       $("#loginModal").modal({
