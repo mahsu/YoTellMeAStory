@@ -17,7 +17,6 @@
 
     <!-- Custom styles for this template -->
     <link href="assets/css/main.css" rel="stylesheet">
-
     <link href="assets/css/font-awesome.min.css" rel="stylesheet">
   
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
@@ -36,13 +35,13 @@
   <body>
 
   <nav class="menu" id="theMenu">
-		<div class="menu-wrap">
-			<h1 class="logo"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">HELP</button></h1>
-			<i class="fa fa-arrow-right menu-close"></i>
-		</div>
-	 <!-- Menu button -->
-		<div id="menuToggle"><i class="fa fa-bars"></i></div>
-	</nav>
+    <div class="menu-wrap">
+      <h1 class="logo"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">HELP</button></h1>
+      <i class="fa fa-arrow-right menu-close"></i>
+    </div>
+   <!-- Menu button -->
+    <div id="menuToggle"><i class="fa fa-bars"></i></div>
+  </nav>
 
   <div id="headerwrap">
     <div class="container">
@@ -80,30 +79,15 @@
   </div>
   <br>
 
-    <div class = "container">
+  <div class = "container">
     <div class = "row">
-      <div class="col-md-4 col-xs-4">
-        <div class = "row">
-          <div class="col-md-5 col-xs-5"></div>
-          <div class="col-md-5 col-xs-5" id = "level1"></div>
-          <div class="col-md-2 col-xs-2"></div>
-        </div>
-      </div>
-
-      <div class="col-md-4 col-xs-4">
-        <div class = "row">
-          <div class="col-md-5 col-xs-5" id = "level2"></div>
-          <div class="col-md-1 col-xs-1"></div>
-          <div class="col-md-5 col-xs-5" id = "level3"></div>
-          <div class="col-md-2 col-xs-2"></div>
-        </div>
-      </div>
-
-      <div class="col-md-4 col-xs-4">
-        <div class = "row">
-          <div class="col-md-5 col-xs-5 " id = "level4"></div>
-          <div class="col-md-7 col-xs-7"></div> 
-        </div>
+      <div class="col-md-12 col-xs-12">
+        <a id="user">
+          <span id="attendeeNoun"></span>
+        </a>
+        <a id="cursor">
+          <span class="typed-cursor" style="visibility: visible;">|</span>
+        </a>
       </div>
     </div>
   </div>
@@ -115,17 +99,21 @@
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/main.js"></script>
-	<script src="assets/js/masonry.pkgd.min.js"></script>
-	<script src="assets/js/imagesloaded.js"></script>
+    <script src="assets/js/masonry.pkgd.min.js"></script>
+    <script src="assets/js/imagesloaded.js"></script>
     <script src="assets/js/classie.js"></script>
-	<script src="assets/js/AnimOnScroll.js"></script>
-	<script>
+    <script src="assets/js/AnimOnScroll.js"></script>
+    <script src="assets/js/mailchimp.js"></script>
+    <script src="assets/js/retina.min.js"></script>
+    <script src="assets/js/typed.js"></script>
+  
+  <script>
   var latVal;
   var longVal;
+  var newLength;
     
-  $(document).ready(
-    function(){
-      var words = ["ASDF", "asdfdsfdf", "JKLSAD", "asdfjkls", "aksdjf", "als", "uwei"]
+    $(document).ready(function() {
+      var words = ["I", "enjoy", "eating", "poop", "on", "the", "side", "Oh", "yes", "I", "do", "sdsadfjkljlk"]
       var colors = ["#00CC99", "#FFD119","#000066","#33CC33","#0066FF","#990099"]
       var colIndex = 0;
       
@@ -135,21 +123,15 @@
           var locator = navigator.geolocation.getCurrentPosition(showPosition);
       } else { }
 
+      var newLength = "";
       for (i = 0; i < words.length; i++) {
-        var level = i % 4 + 1;
-        isUsername = !Boolean(isUsername);
-        if (Boolean(isUsername)){ 
-          $("#level" + level).append("<div id = \"a" + i + "\" style = \" color: white; text-align: center; width:100%; height:100%; display:none; padding-top:20px; padding-bottom:20px; font-size: 36px; font-weight: 900; background-color:" + colors[colIndex] + "\">" + words[i] + "</div>  <br><br>") 
-            colIndex++;
+        for (j = 0; j < words[i].length; j++)  {
+          newLength += words[i][j];
         } 
-        else {
-            $("#level" + level).append("<div id = \"a" + i + "\" style = \" color: white; text-align: center; font-weight: 900; width:100%; height:100%; display:none;  padding-top:20px; padding-bottom:20px; letter-spacing: .05em; font-size: 36px; font-weight: 900;\">" + words[i] + "</button> </div>  <br><br>") 
+        if (i != words.length - 1) {
+          spacer = " ";
+          newLength += spacer;
         }
-
-        if (colIndex == colors.length) {
-          colIndex = 0;
-        }
-        $("#a" + i).fadeIn(2000 * (i + 1));
       }
 
       $.ajax({
@@ -161,14 +143,33 @@
           $("label#successmessage").text(successmessage);
         }
       });
-    }
-  );
+
+      $("#attendeeNoun").typed({
+        strings: [newLength.toUpperCase()],
+        typeSpeed: 20,
+        backSpeed: 50,
+        startDelay: 0,
+        backDelay: 2000,
+        callback: function() {
+          setTimeout(function() {
+            $('.typed-cursor').css('visibility', 'hidden');
+          }, 3000)
+        }
+      });
 
   function showPosition(position) {
       latVal = position.coords.latitude;
       longVal = position.coords.longitude;  
   }
-  
+
+    showLogin = function(){
+      $("#loginModal").modal({
+        show: true
+      });
+    };
+
+  }());
+
   </script>
   </body>
 </html>

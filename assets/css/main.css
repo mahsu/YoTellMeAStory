@@ -27,6 +27,12 @@ p {
     padding-top: 25px;
 }
 
+.decal {
+  height: 2px;
+  background-color: #9B59B6;
+  border-bottom: 1px solid #333;
+}
+
 .glow {
   text-shadow: 0 0 0 rgba(0, 0, 0, 0);
     -webkit-transition: text-shadow 1s linear;
@@ -273,6 +279,7 @@ hr {
     letter-spacing: 3px;
     text-shadow: 2px 2px #000000;
 }
+
 #headerwrap h2 {
     color: #fff;
     font-size: 50px;
@@ -596,4 +603,89 @@ hr {
     transform: translateY(0);
     opacity: 1;
 }
+}
+
+#cursor {
+  color: white; 
+  text-align: center; 
+  font-weight: 900; 
+  width:100%; 
+  height:100%;   
+  padding-top:20px; 
+  padding-bottom:20px; 
+  font-size: 45px; 
+  font-weight: 900;
+
+  -moz-animation-duration: 400ms;
+  -moz-animation-name: blink;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-direction: alternate;
+  
+  -webkit-animation-duration: 400ms;
+  -webkit-animation-name: blink;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  
+  animation-duration: 400ms;
+  animation-name: blink;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@-moz-keyframes blink {
+  from {
+    opacity: 1;
+  }
+  
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes blink {
+  from {
+    opacity: 1;
+  }
+  
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes blink {
+  from {
+    opacity: 1;
+  }
+  
+  to {
+    opacity: 0;
+  }
+}
+
+#nonUser {
+  color: white; 
+  background-color: blue;
+  text-align: center; 
+  font-weight: 900; 
+  width:100%; 
+  height:100%;   
+  padding-top:20px; 
+  padding-bottom:20px; 
+  font-size: 45px; 
+  font-weight: 200;
+  letter-spacing: 1px;
+}
+
+#user {
+  color: white; 
+  background-color: red;
+  text-align: center; 
+  font-weight: 900; 
+  width:100%; 
+  height:100%;   
+  padding-top:20px; 
+  padding-bottom:20px; 
+  font-size: 45px; 
+  font-weight: 200;
+  letter-spacing: 1px;
 }
