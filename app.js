@@ -18,8 +18,8 @@ GLOBAL.io = require('socket.io')(http);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
+
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -41,10 +41,10 @@ function setupRoutes(callback) {
         next(err);
     });
 
-// error handlers
+    // error handlers
 
-// development error handler
-// will print stacktrace
+    // development error handler
+    // will print stacktrace
     if (app.get('env') === 'development') {
         app.use(function (err, req, res, next) {
             res.status(err.status || 500);
@@ -55,8 +55,8 @@ function setupRoutes(callback) {
         });
     }
 
-// production error handler
-// no stacktraces leaked to user
+    // production error handler
+    // no stacktraces leaked to user
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
@@ -64,11 +64,10 @@ function setupRoutes(callback) {
             error: {}
         });
     });
-callback();
+    callback();
 }
 
 
-//var markov = require("./markov-generator");
 var dictionary = require('./importDictionary');
 var Markov = require('./markov-chain.js');
 
@@ -94,30 +93,31 @@ async.waterfall([
             done(null, null);
         });
 
-    }
-], function (err, res) {
-    console.log("Setting up server and database.");
-    var server = require('http').createServer(app);
-    GLOBAL.io = require('socket.io')(server);
+    }],
+    function (err, res) {
+        console.log("Setting up server and database.");
+        var server = require('http').createServer(app);
+        GLOBAL.io = require('socket.io')(server);
 
-    mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/yostory', function(err){
-        if (!err) {
-            GLOBAL.io.on('connection', function(socket){
-                console.log('a user connected');
-                socket.on('disconnect', function(){
-                    console.log('user disconnected');
+        mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/yostory', function(err){
+            if (!err) {
+                GLOBAL.io.on('connection', function(socket){
+                    console.log('a user connected');
+                    socket.on('disconnect', function(){
+                        console.log('user disconnected');
+                    });
                 });
-            });
-        }
-        else throw err;
-    });
+            }
+            else throw err;
+        });
 
-    app.set('port', process.env.PORT || 3000);
+        app.set('port', process.env.PORT || 3000);
 
-    server = app.listen(app.get('port'), function () {
-        console.log('Express server listening on port ' + server.address().port);
-    });
-});
+        server = app.listen(app.get('port'), function () {
+            console.log('Express server listening on port ' + server.address().port);
+        });
+    }
+);
 
 
 
