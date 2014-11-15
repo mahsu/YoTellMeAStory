@@ -17,15 +17,20 @@ userSchema.statics.addUser = function(user, callback) {
     that.findOne({'username': user.username}, function(err, result) {
         if (!err && result) {
             //todo: find and update
-            //user exists, update location
-            that.update({'username': user.username}, {'loc': user.location}, function (err, res) {
-                if (!err){
-                    result.location = user.location;
-                    console.log(result);
-                    callback(null, result);
-                }
-                else console.log(err);
-            });
+            //user exists
+            //update location if different
+            if (user.location != result.loc) {
+                console.log(user.location);
+                console.log(result.loc);
+                that.update({'username': user.username}, {'loc': user.location}, function (err, res) {
+                    if (!err){
+                        result.location = user.location;
+                        console.log(result);
+                        callback(null, result);
+                    }
+                    else console.log(err);
+                });
+            }
         }
         else {
             async.waterfall([
