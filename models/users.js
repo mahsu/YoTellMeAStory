@@ -16,9 +16,16 @@ userSchema.statics.addUser = function(user, callback) {
 
     that.findOne({'username': user.username}, function(err, result) {
         if (!err && result) {
-            //user exists
-            console.log("user exists");
-            callback(null, result.relatedword);
+            //todo: find and update
+            //user exists, update location
+            that.update({'username': user.username}, {'loc': user.location}, function (err, res) {
+                if (!err){
+                    result.location = user.location;
+                    console.log(result);
+                    callback(null, result);
+                }
+                else console.log(err);
+            });
         }
         else {
             async.waterfall([
@@ -30,21 +37,23 @@ userSchema.statics.addUser = function(user, callback) {
                          done(null, user);
                     });
                 },
-                function(user, done) {
-                    console.log(user.username);
+                function(usr, done) {
+                    console.log(usr.relatedword);
                     //save user details
                     var user = new that({
-                        username: user.username,
-                        relatedword: user.relatedword,
-                        loc: user.location
+                        'username': usr.username,
+                        'relatedword': usr.relatedword,
+                        loc: usr.location
                     });
-
+                    console.log(user.relatedword);
                     user.save(function(err) {
                         done(err, user);
                     })
 
                 }
-            ], callback(null, user))
+            ], function(err, res) {
+                callback(err, res);
+            })
         }
     })
 };

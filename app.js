@@ -6,17 +6,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var async = require('async');
-mongoose.connect("mongodb://localhost/yostory");
 var debug = require('debug')('YoStory');
 
 
 var app = express();
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
+GLOBAL.io = require('socket.io')(http);
 
-app.get('/test', function () {
-    res.send("test")
-});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -30,11 +26,10 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
-var yo, routes;
 
 function setupRoutes(callback) {
-    yo = require('./routes/yo');
-    routes = require('./routes/index');
+    var yo = require('./routes/yo');
+    var routes = require('./routes/index');
     app.use('/', routes);
     app.use('/yo', yo);
     app.use('/location/:lat/:lon', routes);
@@ -93,16 +88,33 @@ async.waterfall([
         done(null, res);
     },
     function (res, done) {
+        console.log("Setiting up routes.");
         setupRoutes(function () {
+            console.log("Done.");
             done(null, null);
         });
 
     }
 ], function (err, res) {
+    console.log("Setting up server and database.");
+    var server = require('http').createServer(app);
+    GLOBAL.io = require('socket.io')(server);
+
+    mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/yostory', function(err){
+        if (!err) {
+            GLOBAL.io.on('connection', function(socket){
+                console.log('a user connected');
+                socket.on('disconnect', function(){
+                    console.log('user disconnected');
+                });
+            });
+        }
+        else throw err;
+    });
 
     app.set('port', process.env.PORT || 3000);
 
-    var server = app.listen(app.get('port'), function () {
+    server = app.listen(app.get('port'), function () {
         console.log('Express server listening on port ' + server.address().port);
     });
 });
