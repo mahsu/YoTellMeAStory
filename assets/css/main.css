@@ -664,7 +664,6 @@ hr {
 
 #nonUser {
   color: white; 
-  background-color: blue;
   text-align: center; 
   font-weight: 900; 
   width:100%; 
@@ -674,11 +673,11 @@ hr {
   font-size: 45px; 
   font-weight: 200;
   letter-spacing: 1px;
+  text-shadow: 2px 2px #000000;
 }
 
 #user {
   color: white; 
-  background-color: red;
   text-align: center; 
   font-weight: 900; 
   width:100%; 
@@ -688,4 +687,5 @@ hr {
   font-size: 45px; 
   font-weight: 200;
   letter-spacing: 1px;
+  text-shadow: 2px 2px #000000;
 }
