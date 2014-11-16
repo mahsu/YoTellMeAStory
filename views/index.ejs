@@ -194,11 +194,10 @@
         /*var colors = ["#00CC99", "#FFD119","#000066","#33CC33","#0066FF","#990099"];
         var colIndex = 0;*/
 
-
         var insertSentence = function(sentence) {
             var space = sentence.indexOf(" ");
             var uname = sentence.substring(0, space).toUpperCase();
-            var phrase = sentence.substring(space, sentence.length);
+            var phrase = sentence.substring(space+1, sentence.length);
             phrase = phrase + "  ";
 
             var el = $("#putIn");
@@ -210,7 +209,7 @@
             el.append("<a id ='nonUser'><span id='" + sent + "'></span></a>");
             setTimeout(function () {
                 addWords(" " + phrase, sent);
-            }, 2000);
+            }, 500);
         };
 
         function addWord(finalWords, id){
@@ -240,7 +239,9 @@
                     /*setTimeout(function() {
                         $('.typed-cursor').css('visibility', 'hidden');
                     }, 3000);*/
-                    window.canWrite = true;
+                    setTimeout(function() {
+                        window.canWrite = true;
+                    }, 500);
                 }
             });
         }
