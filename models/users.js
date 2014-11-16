@@ -19,17 +19,24 @@ userSchema.statics.addUser = function(user, callback) {
             //todo: find and update
             //user exists
             //update location if different
-            if (user.location != result.loc) {
-                console.log(user.location);
-                console.log(result.loc);
-                that.update({'username': user.username}, {'loc': user.location}, function (err, res) {
+            if (user.location[0] != result.loc[0] || user.location[1] != result.loc[1]) {
+                //console.log(user.location);
+                //console.log(result.loc);
+                that.update({'username': user.username}, {'loc': user.location}, function (err, status) {
                     if (!err){
-                        result.location = user.location;
-                        console.log(result);
-                        callback(null, result);
+
+                        result.loc = user.location;
+                        //result.loc = user.location;
+                        //console.log(result);
                     }
                     else console.log(err);
-                });
+                    callback(err, result);
+                })
+
+            }
+            else {
+                console.log("meo");
+                callback(err, result);
             }
         }
         else {
