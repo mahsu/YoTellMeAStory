@@ -6,35 +6,35 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var async = require('async');
-mongoose.connect("mongodb://localhost/yostory");
 var debug = require('debug')('YoStory');
 
 
 var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var server = require('http').createServer(app);
+app.set('port', process.env.PORT || 3000);
 
-app.get('/test', function () {
-    res.send("test")
+server = app.listen(app.get('port'), function () {
+    console.log('Express server listening on port ' + server.address().port);
 });
+
+GLOBAL.io = require('socket.io')(server);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
+
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
-var yo, routes;
 
 function setupRoutes(callback) {
-    yo = require('./routes/yo');
-    routes = require('./routes/index');
+    var yo = require('./routes/yo');
+    var routes = require('./routes/index');
     app.use('/', routes);
     app.use('/yo', yo);
     app.use('/location/:lat/:lon', routes);
@@ -46,10 +46,10 @@ function setupRoutes(callback) {
         next(err);
     });
 
-// error handlers
+    // error handlers
 
-// development error handler
-// will print stacktrace
+    // development error handler
+    // will print stacktrace
     if (app.get('env') === 'development') {
         app.use(function (err, req, res, next) {
             res.status(err.status || 500);
@@ -60,20 +60,23 @@ function setupRoutes(callback) {
         });
     }
 
-// production error handler
-// no stacktraces leaked to user
+    // production error handler
+    // no stacktraces leaked to user
     app.use(function (err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
             message: err.message,
             error: {}
         });
+        process.on('uncaughtException', function(err) {
+            // handle the error safely
+            console.log(err);
+        });
     });
-callback();
+    callback();
 }
 
 
-//var markov = require("./markov-generator");
 var dictionary = require('./importDictionary');
 var Markov = require('./markov-chain.js');
 
@@ -88,24 +91,37 @@ async.waterfall([
     },
     function (res, done) {
         console.log("Setting up Markov chain.");
-        GLOBAL.markov = new Markov("I like to meow.");
-        console.log("Done.");
-        done(null, res);
+        GLOBAL.markov = new Markov("I like to meow.", function(){
+            console.log("Done.");
+            done(null, res);
+        });
     },
     function (res, done) {
+        console.log("Setiting up routes.");
         setupRoutes(function () {
+            console.log("Done.");
             done(null, null);
         });
 
+    }],
+    function (err, res) {
+        console.log("Setting up database.");
+
+        mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/yostory', function(err){
+            if (!err) {
+                GLOBAL.io.on('connection', function(socket){
+                    console.log('a user connected');
+                    socket.on('disconnect', function(){
+                        console.log('user disconnected');
+                    });
+                });
+            }
+            else throw err;
+        });
+
+
     }
-], function (err, res) {
-
-    app.set('port', process.env.PORT || 3000);
-
-    var server = app.listen(app.get('port'), function () {
-        console.log('Express server listening on port ' + server.address().port);
-    });
-});
+);
 
 
 

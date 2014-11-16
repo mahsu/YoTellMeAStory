@@ -16,9 +16,28 @@ userSchema.statics.addUser = function(user, callback) {
 
     that.findOne({'username': user.username}, function(err, result) {
         if (!err && result) {
+            //todo: find and update
             //user exists
-            console.log("user exists");
-            callback(null, result.relatedword);
+            //update location if different
+            if (user.location[0] != result.loc[0] || user.location[1] != result.loc[1]) {
+                //console.log(user.location);
+                //console.log(result.loc);
+                that.update({'username': user.username}, {'loc': user.location}, function (err, status) {
+                    if (!err){
+
+                        result.loc = user.location;
+                        //result.loc = user.location;
+                        //console.log(result);
+                    }
+                    else console.log(err);
+                    callback(err, result);
+                })
+
+            }
+            else {
+                console.log("meo");
+                callback(err, result);
+            }
         }
         else {
             async.waterfall([
@@ -30,21 +49,23 @@ userSchema.statics.addUser = function(user, callback) {
                          done(null, user);
                     });
                 },
-                function(user, done) {
-                    console.log(user.username);
+                function(usr, done) {
+                    console.log(usr.relatedword);
                     //save user details
                     var user = new that({
-                        username: user.username,
-                        relatedword: user.relatedword,
-                        loc: user.location
+                        'username': usr.username,
+                        'relatedword': usr.relatedword,
+                        loc: usr.location
                     });
-
+                    console.log(user.relatedword);
                     user.save(function(err) {
                         done(err, user);
                     })
 
                 }
-            ], callback(null, user))
+            ], function(err, res) {
+                callback(err, res);
+            })
         }
     })
 };
