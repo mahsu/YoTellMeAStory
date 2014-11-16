@@ -3,7 +3,7 @@ var router = express.Router();
 var Users = require("../models/users");
 
 
-router.get('/location', function(req, res) {
+router.get('/', function(req, res) {
     var lat = req.query.lat;
     var lon  = req.query.lon;
 
