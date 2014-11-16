@@ -299,57 +299,65 @@ Markov.prototype.traverse = function (start, maxDepth, callback) {
     var chain = [];
     var found = this.find(start);
     var that = this;
-	if (found == false) {
-        console.log('WORD NOT FOUND');
-		getPos(start, function(pos) {
-            pos = pos[0];
-            console.log(pos);
-            var lst=[];
-            switch(pos) {
-                case 'N':
-                case 'AV':
-                    chain.push('The');
-                    chain.push(start);
-                    lst = that.verbs;
-                    break;
-                case 'A':
-                case 'Det':
-                    chain.push(start);
-                    lst = that.nouns;
-                    break;
-                case 'V':
-                    chain.push(start);
-                    lst = that.dets;
-                    break;
+    async.series([
+        function(finish) {
+            if (found == false) {
+                console.log('WORD NOT FOUND');
+                getPos(start, function(pos) {
+                    pos = pos[0];
+                    console.log(pos);
+                    var lst=[];
+                    switch(pos) {
+                        case 'N':
+                        case 'AV':
+                            chain.push('The');
+                            chain.push(start);
+                            lst = that.verbs;
+                            break;
+                        case 'A':
+                        case 'Det':
+                            chain.push(start);
+                            lst = that.nouns;
+                            break;
+                        case 'V':
+                            chain.push(start);
+                            lst = that.dets;
+                            break;
+                    }
+                    start = lst[parseInt(lst.length*Math.random())];
+                    console.log("using: " + start);
+                    found = that.find(start);
+                    finish(null, 1);
+                });
             }
-            start = lst[parseInt(lst.length*Math.random())];
-            console.log("using: " + start);
-            found = that.find(start);
-        });
-    }
-	if (found != false) {
-        chain.push(start);
-        start = found;
-        var second = start.next();
-        if (second != false) {
-            var currentDepth = 1;
-            var prevNode = start;
-            var currentNode = second;
-            while (currentDepth < maxDepth) {
-                chain.push(currentNode.val);
-                console.log(chain);
-                var nextNode = currentNode.next2(prevNode);
-                if (nextNode == false) {
-                    break;
+        }, function(finish) {
+            if (found != false) {
+                chain.push(start);
+                start = found;
+                var second = start.next();
+                if (second != false) {
+                    var currentDepth = 1;
+                    var prevNode = start;
+                    var currentNode = second;
+                    while (currentDepth < maxDepth) {
+                        chain.push(currentNode.val);
+                        console.log(chain);
+                        var nextNode = currentNode.next2(prevNode);
+                        if (nextNode == false) {
+                            break;
+                        }
+                        currentDepth++;
+                        prevNode = currentNode;
+                        currentNode = nextNode;
+                    }
+                    finish(null, 2);
                 }
-                currentDepth++;
-                prevNode = currentNode;
-                currentNode = nextNode;
             }
         }
-    }
-    console.log("returning");
-    callback(chain.join(" "));
+    ], function(err, res) {
+        console.log("returning");
+        callback(chain.join(" "));
+    });
 };
 
 Markov.prototype.generateSentence = function(prevWord, pos, callback) {
