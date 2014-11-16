@@ -35,7 +35,6 @@ userSchema.statics.addUser = function(user, callback) {
 
             }
             else {
-                console.log("meo");
                 callback(err, result);
             }
         }
@@ -50,14 +49,14 @@ userSchema.statics.addUser = function(user, callback) {
                     });
                 },
                 function(usr, done) {
-                    console.log(usr.relatedword);
+                    //console.log(usr.relatedword);
                     //save user details
                     var user = new that({
                         'username': usr.username,
                         'relatedword': usr.relatedword,
                         loc: usr.location
                     });
-                    console.log(user.relatedword);
+                    //console.log(user.relatedword);
                     user.save(function(err) {
                         done(err, user);
                     })
