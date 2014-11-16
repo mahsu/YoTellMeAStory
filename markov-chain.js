@@ -249,25 +249,6 @@ Markov.prototype.find = function (str) {
 
 Markov.prototype.traverse = function (start, maxDepth, callback) {
     if (maxDepth == null) {maxDepth = 20;}
-    start = this.find(start);
-    var chain = [];
-    if (start != false) {
-        var currentDepth = 0;
-        var currentNode = start;
-        while (currentDepth < maxDepth) {
-            chain.push(currentNode.val);
-            currentNode = currentNode.next();
-            if (currentNode == false) {
-                break;
-            }
-            currentDepth++;
-        }
-    }
-    callback(chain.join(" "));
-};
-
-Markov.prototype.traverse2 = function (start, maxDepth, callback) {
-    if (maxDepth == null) {maxDepth = 20;}
     var chain = [];
     start = this.find(start);
     if (start != false) {

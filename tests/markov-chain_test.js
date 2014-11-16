@@ -61,7 +61,7 @@ exports.cycleTraverse2 = nodeunit.testCase({
             test.done();
         });
     }
-});*/
+});
 
 exports.largeTraverse = nodeunit.testCase({
     "setUp": function (callback) {
