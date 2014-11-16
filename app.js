@@ -92,7 +92,7 @@ async.waterfall([
     },
     function (res, done) {
         console.log("Setting up Markov chain.");
-        fs.readFile('./wildgarden.txt', function (err, data) {
+        fs.readFile('./source_text/politics.txt', function (err, data) {
             if (err) {
                 throw err;
             }
