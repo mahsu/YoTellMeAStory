@@ -288,6 +288,9 @@ hr {
 
 #page-content-wrapper {
     padding: 20px;
+    position: fixed;
+    z-index: 100;
+    top: 0px;
 }
 
 #social {   
@@ -781,6 +784,7 @@ hr {
 
 #wrapper.toggled #page-content-wrapper {
     position: absolute;
+    position: fixed;
     margin-right: -250px;
 }
 
