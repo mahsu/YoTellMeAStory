@@ -86,9 +86,10 @@ async.waterfall([
     },
     function (res, done) {
         console.log("Setting up Markov chain.");
-        GLOBAL.markov = new Markov("I like to meow.");
-        console.log("Done.");
-        done(null, res);
+        GLOBAL.markov = new Markov("I like to meow.", function(){
+            console.log("Done.");
+            done(null, res);
+        });
     },
     function (res, done) {
         console.log("Setiting up routes.");
