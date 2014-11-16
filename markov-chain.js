@@ -294,7 +294,7 @@ Markov.prototype.find = function (str) {
     return false;
 };
 
-Markov.prototype.traverse = function (start, maxDepth, callback) {
+Markov.prototype.traverse = function (start, maxDepth, obj, callback) {
     if (maxDepth == null) {maxDepth = 20;}
     var chain = [];
     var found = this.find(start);
@@ -302,7 +302,6 @@ Markov.prototype.traverse = function (start, maxDepth, callback) {
     async.series([
         function(finish) {
             if (found == false) {
-                console.log('WORD NOT FOUND');
                 getPos(start, function(pos) {
                     pos = pos[0];
                     console.log(pos);
@@ -325,7 +324,6 @@ Markov.prototype.traverse = function (start, maxDepth, callback) {
                             break;
                     }
                     start = lst[parseInt(lst.length*Math.random())];
-                    console.log("using: " + start);
                     found = that.find(start);
                     finish(null, 1);
                 });
@@ -356,7 +354,7 @@ Markov.prototype.traverse = function (start, maxDepth, callback) {
         }
     ], function(err, res) {
         console.log("returning");
-        callback(chain.join(" "));
+        callback(chain.join(" "), obj);
     });
 };
 

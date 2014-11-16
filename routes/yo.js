@@ -17,10 +17,11 @@ router.get('/', function(req, res) {
     Users.addUser(user, function(err, result) {
         if (err) console.log(err);
         else {
-                GLOBAL.markov.traverse(result.relatedword, null, function(str) {
-                    result._doc.sentence = str;
-                    GLOBAL.io.emit('data', result);
-                    res.send(result);
+                GLOBAL.markov.traverse(result.relatedword, null, result, function(str, obj) {
+                    //result._doc.sentence = str;
+                    obj._doc.sentence = str;
+                    GLOBAL.io.emit('data', obj);
+                    res.send(obj);
                 });
 
         }
