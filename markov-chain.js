@@ -1,7 +1,26 @@
 var WordPOS = require('wordpos'), wordpos = new WordPOS();
+var fs = require('fs');
 var async = require('async');
 
 var prepositions = ["aboard", "about", "above", "across", "after", "against", "along", "amid", "among", "anti", "around", "as", "at", "before", "behind", "below", "beneath", "beside", "besides", "between", "beyond", "but", "by", "concerning", "considering", "despite", "down", "during", "except", "excepting", "excluding", "following", "for", "from", "in", "inside", "into", "like", "minus", "near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus", "regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "under", "underneath", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without"];
+/*
+var f = fs.readFile('wildgarden.txt', function (err, data) {
+            if (err) {
+                throw err;
+            }
+			console.log(data);
+            var words = data.toString().replace(/(\r\n|\n|\r)/gm," ");
+            var word_arr = words.match(/[^\.!\?]+[\.!\?]+/g);
+			console.log(words);
+			console.log(word_arr);
+            var large2 = new Markov(word_arr, function() {
+                console.log("Setup done");
+			large2.traverse("Bob");
+                callback();
+            });
+        });
+
+console.log(new Markov().traverse("Bob"));*/
 
 Array.prototype.contains = function(obj) {
     var i = this.length;
@@ -79,6 +98,9 @@ function Markov(text, callback) {
     //text = text.split(".");
     //text = text.match(/[^\.!\?]+[\.!\?]+/g);
     this.seed = [];
+	this.nouns = ['person', 'time', 'day'];
+	this.verbs = ['was','is'];
+	this.dets = ['a','the','an','his','her','that','this'];
     var totalWords = 0;
     for (var i = 0; i < text.length; i++) {
         var wordList = text[i].trim().split(" ");
@@ -212,7 +234,7 @@ Markov.prototype.add = function (str1, str2, callback) {
     }
 };
 
-Markov.prototype.add2 = function (str1, str2, str3, callback) {
+/*Markov.prototype.add2 = function (str1, str2, str3, callback) {
     var n1 = this.find(str1.trim());
     var n2 = this.find(str2.trim());
     var n3 = this.find(str3.trim());
@@ -220,6 +242,31 @@ Markov.prototype.add2 = function (str1, str2, str3, callback) {
 
     //console.log(n1, n2, n3);
 
+    if (n1 == false) {
+        n1 = new Node(str1, []);
+        markov.elements.push(n1);
+    }
+    if (n2 == false) {
+        n2 = new Node(str2, []);
+        markov.elements.push(n2);
+    }
+    if (n3 == false) {
+        n3 = new Node(str3, []);
+        markov.elements.push(n3);
+    }
+    n1.addChild2(n2, n3);
+    n1.addChild(n2);
+    n2.addChild(n3);
+    return callback(markov);
+};*/
+Markov.prototype.add2 = function (str1, str2, str3, callback) {
+    var n1 = this.find(str1.trim());
+    var n2 = this.find(str2.trim());
+    var n3 = this.find(str3.trim());
+    var markov = this;
+
+    //console.log(n1, n2, n3);
+	var pos = '';
     if (n1 == false) {
         n1 = new Node(str1, []);
         markov.elements.push(n1);
@@ -247,30 +294,68 @@ Markov.prototype.find = function (str) {
     return false;
 };
 
-Markov.prototype.traverse = function (start, maxDepth, callback) {
+Markov.prototype.traverse = function (start, maxDepth, obj, callback) {
     if (maxDepth == null) {maxDepth = 20;}
     var chain = [];
-    start = this.find(start);
-    if (start != false) {
-        chain.push(start.val);
-        var second = start.next();
-        if (second != false) {
-            var currentDepth = 1;
-            var prevNode = start;
-            var currentNode = second;
-            while (currentDepth < maxDepth) {
-                chain.push(currentNode.val);
-                var nextNode = currentNode.next2(prevNode);
-                if (nextNode == false) {
-                    break;
+    var found = this.find(start);
+    var that = this;
+    async.series([
+        function(finish) {
+            if (found == false) {
+                getPos(start, function(pos) {
+                    pos = pos[0];
+                    console.log(pos);
+                    var lst=[];
+                    switch(pos) {
+                        case 'N':
+                        case 'AV':
+                            chain.push('The');
+                            chain.push(start);
+                            lst = that.verbs;
+                            break;
+                        case 'A':
+                        case 'Det':
+                            chain.push(start);
+                            lst = that.nouns;
+                            break;
+                        case 'V':
+                            chain.push(start);
+                            lst = that.dets;
+                            break;
+                    }
+                    start = lst[parseInt(lst.length*Math.random())];
+                    found = that.find(start);
+                    finish(null, 1);
+                });
+            }
+        }, function(finish) {
+            if (found != false) {
+                chain.push(start);
+                start = found;
+                var second = start.next();
+                if (second != false) {
+                    var currentDepth = 1;
+                    var prevNode = start;
+                    var currentNode = second;
+                    while (currentDepth < maxDepth) {
+                        chain.push(currentNode.val);
+                        console.log(chain);
+                        var nextNode = currentNode.next2(prevNode);
+                        if (nextNode == false) {
+                            break;
+                        }
+                        currentDepth++;
+                        prevNode = currentNode;
+                        currentNode = nextNode;
+                    }
+                    finish(null, 2);
                 }
-                currentDepth++;
-                prevNode = currentNode;
-                currentNode = nextNode;
             }
         }
-    }
-    callback(chain.join(" "));
+    ], function(err, res) {
+        console.log("returning");
+        callback(chain.join(" "), obj);
+    });
 };
 
 Markov.prototype.generateSentence = function(prevWord, pos, callback) {
