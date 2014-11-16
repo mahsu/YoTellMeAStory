@@ -102,34 +102,51 @@
 <script src="js/typed.js"></script>
 
 <script>
-    var latVal;
-    var longVal;
-    var newLength;
+
     $(document).ready(function() {
+        window.loc = [0,0]; //lat, lon
+        window.accuracy = 0; //+/- meters
+        window.radius = 1000;
+
         var username = "sample321";
         var relevant = "sample";
         var sentence = "I enjoy eating poop on the side oh yes I do";
+        var newLength = relevant.toUpperCase() + " " + sentence;
 
         var colors = ["#00CC99", "#FFD119","#000066","#33CC33","#0066FF","#990099"];
         var colIndex = 0;
 
         var isUsername = true;
 
-        if (navigator.geolocation) {
-            var locator = navigator.geolocation.getCurrentPosition(showPosition);
-        } else { }
+        var geoOptions = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+        };
 
-        var newLength = relevant.toUpperCase() + " " + sentence;
+        function geoSuccess(pos) {
+            var crd = pos.coords;
+            window.loc = [crd.latitude,crd.longitude];
+            window.accuracy = crd.accuracy;
 
-        $.ajax({
-            url: "/yo/location",
-            data: {lat: latVal, lon: longVal},
-            type: "get",
-            success: function(data) {
-                successmessage = 'Data was succesfully captured';
-                $("label#successmessage").text(successmessage);
-            }
-        });
+            $.ajax({
+                url: "/yo/location",
+                data: {'lat': window.loc[0], 'lon': window.loc[1]},
+                type: "get",
+                success: function(data) {
+                    console.log(data);
+                }
+            });
+
+        }
+
+        function geoError(err) {
+            console.warn('ERROR(' + err.code + '): ' + err.message);
+        }
+
+        if (navigator.geolocation.getCurrentPosition)
+            navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
+
 
         $("#attendeeNoun").typed({
             strings: [newLength],
@@ -144,12 +161,7 @@
             }
         });
 
-        function showPosition(position) {
-            latVal = position.coords.latitude;
-            longVal = position.coords.longitude;
-        }
-
-        function distance(loc1, loc2) {
+        function calcDistance(loc1, loc2) {
             var lat1 = loc1[0];
             var lon1 = loc1[1];
             var lat2 = loc2[0];
@@ -167,12 +179,6 @@
             var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             return R * c;
         }
-
-        showLogin = function(){
-            $("#loginModal").modal({
-                show: true
-            });
-        };
 
     }());
 
