@@ -300,6 +300,7 @@ Markov.prototype.traverse = function (start, maxDepth, callback) {
     var found = this.find(start);
     var that = this;
 	if (found == false) {
+        console.log('WORD NOT FOUND');
 		getPos(start, function(pos) {
             pos = pos[0];
             var lst=[];
