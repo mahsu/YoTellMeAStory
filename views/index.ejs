@@ -137,10 +137,7 @@
         socket.on('data', function(data){
             var user = data.username;
             data = data.sentence;
-            var space = data.indexOf(" ");
-            var name = data.substring(0, space).toUpperCase();
-            var sentence = data.substring(space, data.length());
-            queue.push([name, sentence]);
+            queue.push(data);
         });
 
         var canWrite = true;
@@ -150,7 +147,7 @@
                 var new_sentence = queue.shift();
                 if (typeof(new_sentence) != "undefined") {
                     canWrite = false;
-                    insertSentence(new_sentence[0], new_sentence[1]);
+                    insertSentence(new_sentence);
                 }
             }
         }, 100);
@@ -158,7 +155,11 @@
         /*var colors = ["#00CC99", "#FFD119","#000066","#33CC33","#0066FF","#990099"];
         var colIndex = 0;*/
 
-        function insertSentence(uname, sentence) {
+        function insertSentence(sentence) {
+            var space = sentence.indexOf(" ");
+            var uname = sentence.substring(0, space).toUpperCase();
+            var phrase = sentence.substring(space, sentence.length());
+
             var el = $("#putIn");
             var name = "name" + parseInt(Math.random()*10000000);
             var sent = "sent" + parseInt(Math.random()*10000000);
@@ -167,7 +168,7 @@
 
             el.append("<a id ='nonUser'><span id='" + sent + "'></span></a>");
             setTimeout(function () {
-                addWords(" " + sentence, sent);
+                addWords(" " + phrase, sent);
             }, 2000);
         }
 
@@ -231,7 +232,7 @@
                             var sentence = data[i].sentence;
                             var username = data[i].username;
                             if (calcDistance(window.loc, yloc) <= window.radius && sentence != "") {
-                                insertSentence(yrelatedword, sentence);
+                                insertSentence(sentence);
                             }
                         }
                 }
