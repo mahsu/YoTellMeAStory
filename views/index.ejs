@@ -162,18 +162,16 @@
     var socket = io();
     $(document).ready(function() {
         navigator.geolocation.getCurrentPosition(gpsPermissionGranted, function(err) {console.log(err)}, {enableHighAccuracy: true});
-
         window.queue = [];
-
-
-
         socket.on('data', function(data){
             console.log(data);
             if (calcDistance(window.loc, data.loc) <= window.radius) {
                 var user = data.username;
                 var d = data.sentence;
                 updateUsername(user);
+                console.log(d);
                 window.queue.push(d);
+
             }
         });
 
@@ -238,9 +236,9 @@
                 startDelay: 0,
                 backDelay: 2000,
                 callback: function() {
-                    setTimeout(function() {
+                    /*setTimeout(function() {
                         $('.typed-cursor').css('visibility', 'hidden');
-                    }, 3000);
+                    }, 3000);*/
                     window.canWrite = true;
                 }
             });

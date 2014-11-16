@@ -11,8 +11,8 @@ var large2;
 //mm = new Markov(["I like to know and eat chicken. Meow I am a cat. I am a dog. I am a chicken. I like yo. Yo, I like hacking. Poop, know know I am xDDD."], function() {
 //    callback();
 //});
-
-/*var garden = null;
+/*
+var garden = null;
  fs.readFile('../wildgarden.txt', function (err, data) {
  if (err) {
  throw err;
@@ -21,6 +21,7 @@ var large2;
  word_arr = words.match(/[^\.!\?]+[\.!\?]+/g);
  garden = new Markov(word_arr);
  });*/
+/*
 exports.testTraverse2 = nodeunit.testCase({
     "setUp": function (callback) {
         console.log("setting up");
@@ -62,7 +63,8 @@ exports.cycleTraverse2 = nodeunit.testCase({
         });
     }
 });
-
+*/
+/*
 exports.largeTraverse = nodeunit.testCase({
     "setUp": function (callback) {
         console.log("setting up");
@@ -90,18 +92,23 @@ exports.largeTraverse = nodeunit.testCase({
             test.done();
         });
     }
-});
+});*/
 
 exports.largeTraverse2 = nodeunit.testCase({
     "setUp": function (callback) {
         console.log("setting up");
         fs.readFile('../wildgarden.txt', function (err, data) {
+
             if (err) {
                 throw err;
             }
+			console.log('replacing');
             var words = data.toString().replace(/(\r\n|\n|\r)/gm," ");
+			console.log('replacing');
             var word_arr = words.match(/[^\.!\?]+[\.!\?]+/g);
+			console.log('replacing');
             new Markov(word_arr, function(o) {
+				console.log('replacing');
                 large2 = o;
                 console.log("Setup done");
                 callback();
