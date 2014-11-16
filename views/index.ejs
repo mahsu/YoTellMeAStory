@@ -224,7 +224,18 @@
                 type: "get",
                 success: function(data) {
                     console.log(data);
+                    if (data.length > 0) {
+                        for (i=0; i<data.length; i++) {
+                            var yloc = data[i].loc;
+                            var yrelatedword = data[i].relatedword;
+                            var sentence = data[i].sentence;
+                            var username = data[i].username;
+                            if (calcDistance(window.loc, yloc) <= window.radius && sentence != "") {
+                                insertSentence(yrelatedword, sentence);
+                            }
+                        }
                 }
+                    }
             });
 
         }
