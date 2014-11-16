@@ -6,6 +6,7 @@ var m;
 var mm;
 var cycle;
 var large;
+var large2;
 //cycle = new Markov(["I know I"]);
 //mm = new Markov(["I like to know and eat chicken. Meow I am a cat. I am a dog. I am a chicken. I like yo. Yo, I like hacking. Poop, know know I am xDDD."], function() {
 //    callback();
@@ -20,6 +21,107 @@ var large;
  word_arr = words.match(/[^\.!\?]+[\.!\?]+/g);
  garden = new Markov(word_arr);
  });*/
+exports.testTraverse2 = nodeunit.testCase({
+    "setUp": function (callback) {
+        console.log("setting up");
+        new Markov(["I like to know."], function(o) {
+            m = o;
+            console.log("Setup done");
+            callback();
+        });
+    },
+    "tearDown": function (callback) {
+        callback();
+    },
+    "traverse test" : function (test) {
+        console.log("starting test");
+        m.traverse2("I", 3, function(str) {
+            test.equal(str, "I like to");
+            test.done();
+        });
+    }
+});
+
+exports.cycleTraverse2 = nodeunit.testCase({
+    "setUp": function (callback) {
+        console.log("setting up");
+        new Markov(["I know I know I"], function(o) {
+            cycle = o;
+            console.log("Setup done");
+            callback();
+        });
+    },
+    "tearDown": function (callback) {
+        callback();
+    },
+    "cycle test" : function (test) {
+        console.log("starting test");
+        cycle.traverse2("know", 9, function(str) {
+            test.equal(str, "know I know I");
+            test.done();
+        });
+    }
+});
+
+exports.largeTraverse2 = nodeunit.testCase({
+    "setUp": function (callback) {
+        console.log("setting up");
+        fs.readFile('../test.txt', function (err, data) {
+            if (err) {
+                throw err;
+            }
+            var words = data.toString().replace(/(\r\n|\n|\r)/gm," ");
+            var word_arr = words.match(/[^\.!\?]+[\.!\?]+/g);
+            new Markov(word_arr, function(o) {
+                large = o;
+                console.log("Setup done");
+                callback();
+            });
+        });
+    },
+    "tearDown": function (callback) {
+        callback();
+    },
+    "large traverse test" : function (test) {
+        console.log("starting test");
+        large.traverse2("I", null, function(str) {
+            console.log(str);
+            test.notEqual(str, "");
+            test.done();
+        });
+    }
+});
+
+exports.largeTraverse3 = nodeunit.testCase({
+    "setUp": function (callback) {
+        console.log("setting up");
+        fs.readFile('../wildgarden.txt', function (err, data) {
+            if (err) {
+                throw err;
+            }
+            var words = data.toString().replace(/(\r\n|\n|\r)/gm," ");
+            var word_arr = words.match(/[^\.!\?]+[\.!\?]+/g);
+            new Markov(word_arr, function(o) {
+                large2 = o;
+                console.log("Setup done");
+                callback();
+            });
+        });
+    },
+    "tearDown": function (callback) {
+        callback();
+    },
+    "large traverse test 2" : function (test) {
+        console.log("starting test");
+        large2.traverse2("I", null, function(str) {
+            console.log(str);
+            test.notEqual(str, "");
+            test.done();
+        });
+    }
+});
+
+/*
 exports.testTraverse = nodeunit.testCase({
     "setUp": function (callback) {
         console.log("setting up");
@@ -93,6 +195,34 @@ exports.largeTraverse = nodeunit.testCase({
     }
 });
 
+exports.genSentence = nodeunit.testCase({
+    "setUp": function (callback) {
+        console.log("setting up");
+        fs.readFile('../wildgarden.txt', function (err, data) {
+            if (err) {
+                throw err;
+            }
+            var words = data.toString().replace(/(\r\n|\n|\r)/gm," ");
+            var word_arr = words.match(/[^\.!\?]+[\.!\?]+/g);
+            large2 = new Markov(word_arr, function() {
+                console.log("Setup done");
+                callback();
+            });
+        });
+    },
+    "tearDown": function (callback) {
+        callback();
+    },
+    "gen test" : function (test) {
+        console.log("starting test");
+        large2.generateSentence("summer", null, function(str) {
+            console.log("final: " + str);
+            test.notEqual(str, "");
+            test.done();
+        });
+    }
+});
+*/
 //module.exports = {
 
 /*'test longer traverse' : function (test) {
