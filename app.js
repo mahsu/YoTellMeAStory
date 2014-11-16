@@ -37,7 +37,7 @@ function setupRoutes(callback) {
     var routes = require('./routes/index');
     app.use('/', routes);
     app.use('/yo', yo);
-    app.use('/location/:lat/:lon', routes);
+    app.use('/location/', routes);
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
