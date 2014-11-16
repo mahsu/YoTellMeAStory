@@ -159,22 +159,21 @@
 <script src="js/typed.js"></script>
 <script src="js/socket.io.js"></script>
 <script>
+    var socket = io();
     $(document).ready(function() {
         navigator.geolocation.getCurrentPosition(gpsPermissionGranted, function(err) {console.log(err)}, {enableHighAccuracy: true});
-
-        var socket = io();
 
         window.queue = [];
 
 
 
         socket.on('data', function(data){
+            console.log(data);
             if (calcDistance(window.loc, data.loc) <= window.radius) {
                 var user = data.username;
-                data = data.sentence;
+                var d = data.sentence;
                 updateUsername(user);
-                window.queue.push(data.sentence);
-
+                window.queue.push(d);
             }
         });
 
@@ -190,11 +189,7 @@
             }
         }, 100);
 
-        //always scrpll to bottom
-        function scrollBottom(){
-            $("html, body").animate({ scrollTop: $(document).height() }, "fast");
-        }
-        setInterval(scrollBottom, 750);
+
 
         /*var colors = ["#00CC99", "#FFD119","#000066","#33CC33","#0066FF","#990099"];
         var colIndex = 0;*/
@@ -219,6 +214,7 @@
         };
 
         function addWord(finalWords, id){
+            $("html, body").animate({ scrollTop: $(document).height() }, "fast"); //scroll to bottom
             $("#"+id).typed({
                 strings: [finalWords],
                 typeSpeed: 20,
@@ -234,6 +230,7 @@
         }
 
         function addWords(finalWords, id){
+            $("html, body").animate({ scrollTop: $(document).height() }, "fast"); //scroll to bottom
             $("#"+id).typed({
                 strings: [finalWords],
                 typeSpeed: 20,
@@ -272,7 +269,7 @@
                 success: function(data) {
                     console.log(data);
                     if (data.length > 0) {
-                        for (var i=data.length-1; i>=0; i--) {
+                        for (var i=0; i<data.length; i++) {
                             var yloc = data[i].loc;
                             var yrelatedword = data[i].relatedword;
                             var sentence = data[i].sentence;
