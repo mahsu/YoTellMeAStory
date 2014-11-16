@@ -36,7 +36,7 @@ function setupRoutes(callback) {
     var yo = require('./routes/yo');
     var routes = require('./routes/index');
     app.use('/', routes);
-    app.use('/yo', yo);
+    app.use((process.env.YO_URL || '/yo'), yo);
     app.use('/location/', routes);
 
     // catch 404 and forward to error handler
