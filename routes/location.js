@@ -12,7 +12,10 @@ router.get('/', function(req, res) {
         if (err) {console.log(err);}
         if (results.length >0) {
             for (var i=0; i<results.length; i++) {
-                GLOBAL.markov.traverse(results[i].relatedword, null, function(str) {
+                console.log(results[i]);
+                var word = results[i].relatedword;
+                GLOBAL.markov.traverse(word, null, function(str) {
+                    console.log(results[i]);
                     results[i]._doc.sentence = str;
                 });
             }
