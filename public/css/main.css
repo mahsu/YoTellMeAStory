@@ -895,3 +895,7 @@ hr {
     font-size: 60px;
     color: white;
 }
+
+li.username {
+  color: white;
+}

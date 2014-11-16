@@ -165,12 +165,16 @@
         var socket = io();
 
         window.queue = [];
+
+
+
         socket.on('data', function(data){
             if (calcDistance(window.loc, data.loc) <= window.radius) {
                 var user = data.username;
                 data = data.sentence;
+                updateUsername(user);
                 window.queue.push(data.sentence);
-                $('#user-container').append("<li href='#'>" + user + "</li>");
+
             }
         });
 
@@ -275,6 +279,7 @@
                             var username = data[i].username;
                             if (calcDistance(window.loc, yloc) <= window.radius && sentence != "") {
                                 window.queue.push(data[i].sentence);
+                                updateUsername(username);
                             }
                         }
                 }
@@ -311,6 +316,10 @@
         }
 
     }());
+
+    function updateUsername(user) {
+        $('#user-container').append("<li class='username' href='#'>" + user + "</li>");
+    }
 
     function gpsPermissionGranted(position) {
         $('#gpsApproval h1').html('<i class="fa fa-thumbs-o-up"></i>');
