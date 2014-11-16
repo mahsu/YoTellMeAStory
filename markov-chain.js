@@ -304,7 +304,6 @@ Markov.prototype.traverse = function (start, maxDepth, obj, callback) {
             if (found == false) {
                 getPos(start, function(pos) {
                     pos = pos[0];
-                    console.log(pos);
                     var lst=[];
                     switch(pos) {
                         case 'N':
@@ -339,7 +338,6 @@ Markov.prototype.traverse = function (start, maxDepth, obj, callback) {
                     var currentNode = second;
                     while (currentDepth < maxDepth) {
                         chain.push(currentNode.val);
-                        console.log(chain);
                         var nextNode = currentNode.next2(prevNode);
                         if (nextNode == false) {
                             break;
@@ -353,7 +351,6 @@ Markov.prototype.traverse = function (start, maxDepth, obj, callback) {
             }
         }
     ], function(err, res) {
-        console.log("returning");
         callback(chain.join(" "), obj);
     });
 };
