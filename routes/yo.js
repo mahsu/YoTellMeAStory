@@ -14,13 +14,16 @@ router.get('/', function(req, res) {
         user.location[0] = 0;
         user.location[1] = 0;
     }
-    Users.addUser(user, function(err, result) {
+    Users.addUser(user, function(err, results) {
         if (err) console.log(err);
         else {
-            GLOBAL.io.emit('data', result);
-            //push via socketio
-            //console.log(result);
-            res.send(result);
+                console.log(results[0]);
+                results.sentence = "d";//gen
+                console.log(result);
+                    GLOBAL.io.emit('data', result);
+                    res.send(results);
+
+
         }
     });
 
@@ -30,12 +33,12 @@ router.get('/location', function(req, res) {
     var lat = req.query.lat;
     var lon  = req.query.lon;
 
-    Users.nearbyUsers(10000, lat, lon, function(err, result) {
-        if (err) console.log(err);
+    Users.nearbyUsers(10000, lat, lon, function(err, results) {
 
+        if (err) {console.log(err);}
 
-        console.log(result);
-        res.send(result);
+        results[0]._doc.sentence = "";
+        res.send(results);
     });
 
 });
