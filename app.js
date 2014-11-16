@@ -10,9 +10,14 @@ var debug = require('debug')('YoStory');
 
 
 var app = express();
-var http = require('http').Server(app);
-GLOBAL.io = require('socket.io')(http);
+var server = require('http').createServer(app);
+app.set('port', process.env.PORT || 3000);
 
+server = app.listen(app.get('port'), function () {
+    console.log('Express server listening on port ' + server.address().port);
+});
+
+GLOBAL.io = require('socket.io')(server);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -100,9 +105,7 @@ async.waterfall([
 
     }],
     function (err, res) {
-        console.log("Setting up server and database.");
-        var server = require('http').createServer(app);
-        GLOBAL.io = require('socket.io')(server);
+        console.log("Setting up database.");
 
         mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/yostory', function(err){
             if (!err) {
@@ -116,11 +119,7 @@ async.waterfall([
             else throw err;
         });
 
-        app.set('port', process.env.PORT || 3000);
 
-        server = app.listen(app.get('port'), function () {
-            console.log('Express server listening on port ' + server.address().port);
-        });
     }
 );
 

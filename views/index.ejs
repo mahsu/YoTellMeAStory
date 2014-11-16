@@ -100,10 +100,15 @@
 <script src="js/bootstrap.min.js"></script>
 <script src="js/main.js"></script>
 <script src="js/typed.js"></script>
-
+<script src="js/socket.io.js"></script>
 <script>
 
     $(document).ready(function() {
+        var socket = io();
+        socket.on('data', function(data){
+            console.log(data);
+        });
+
         window.loc = [0,0]; //lat, lon
         window.accuracy = 0; //+/- meters
         window.radius = 1000;
@@ -127,6 +132,7 @@
         function geoSuccess(pos) {
             var crd = pos.coords;
             window.loc = [crd.latitude,crd.longitude];
+            console.log(window.loc);
             window.accuracy = crd.accuracy;
 
             $.ajax({
