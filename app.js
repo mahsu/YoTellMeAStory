@@ -63,6 +63,10 @@ function setupRoutes(callback) {
             message: err.message,
             error: {}
         });
+        process.on('uncaughtException', function(err) {
+            // handle the error safely
+            console.log(err);
+        });
     });
     callback();
 }
