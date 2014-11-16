@@ -14,10 +14,12 @@ router.get('/', function(req, res) {
         user.location[0] = 0;
         user.location[1] = 0;
     }
+    console.log(user);
     Users.addUser(user, function(err, result) {
         if (err) console.log(err);
         else {
                 GLOBAL.markov.traverse(result.relatedword, null, function(str) {
+                    console.log(result);
                     result._doc.sentence = str;
                     GLOBAL.io.emit('data', result);
                     res.send(result);
