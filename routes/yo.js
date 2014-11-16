@@ -14,15 +14,14 @@ router.get('/', function(req, res) {
         user.location[0] = 0;
         user.location[1] = 0;
     }
-    Users.addUser(user, function(err, results) {
+    Users.addUser(user, function(err, result) {
         if (err) console.log(err);
         else {
-                console.log(results[0]);
-                results.sentence = "d";//gen
-                console.log(result);
+                GLOBAL.markov.traverse(result.relatedword, null, function(str) {
+                    result._doc.sentence = str;
                     GLOBAL.io.emit('data', result);
-                    res.send(results);
-
+                    res.send(result);
+                });
 
         }
     });
@@ -37,7 +36,13 @@ router.get('/location', function(req, res) {
 
         if (err) {console.log(err);}
 
-        results[0]._doc.sentence = "";
+        if (results.length >0) {
+            for (var i=0; i<results.length; i++) {
+                GLOBAL.markov.traverse(results[i].relatedword, null, function(str) {
+                    results[i]._doc.sentence = str;
+                });
+            }
+        }
         res.send(results);
     });
 
