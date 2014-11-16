@@ -122,7 +122,7 @@ hr {
 }
 .menu-wrap {
     position: absolute;
-    top: 0;
+    top: 40px;
     left: 60px;
     background: #8e44ad;
     width: 200px;
@@ -219,7 +219,7 @@ hr {
 }
 #menuToggle {
     position: absolute;
-    top: 20px;
+    top: 60px;
     left: 0;
     z-index: 11;
     display: block;
@@ -231,138 +231,6 @@ hr {
     line-height: 40px;
     cursor: pointer;
     background: rgba(0, 0, 0, .25);
-    -webkit-transition: all .1s ease-in-out;
-    -moz-transition: all .1s ease-in-out;
-    -ms-transition: all .1s ease-in-out;
-    -o-transition: all .1s ease-in-out;
-    transition: all .1s ease-in-out;
-}
-
-.menu2.menu2-open {
-    left: 0;
-}
-.menu2-wrap {
-    position: absolute;
-    top: 0;
-    left: -100px;
-    background: #8e44ad;
-    width: 200px;
-    height: 100%;
-    opacity: 60%;
-}
-
-.menu2 h1.logo a {
-    font-family: Raleway, Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    font-weight: 800;
-    letter-spacing: .15em;
-    line-height: 40px;
-    text-transform: uppercase;
-    color: #fff;
-    margin-top: 20px;
-}
-.menu2 h1.logo a:hover {
-    color: #1abc9c;
-}
-.menu2 img.logo {
-    margin: 20px 0;
-    max-width: 160px;
-}
-.menu2 a {
-    margin-right: 20px;
-    color: gray;
-    display: block;
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 40px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-}
-.menu2 a:hover {
-    color: #fff;
-}
-.menu2 a:active {
-    color: #fff;
-}
-
-.menu2 a>i {
-    float: right;
-    display: inline-block;
-    vertical-align: middle;
-    text-align: right;
-    width: 25px;
-    font-size: 14px;
-    line-height: 40px;
-    margin: 25px 2px;
-}
-.menu2-close {
-    cursor: pointer;
-    display: block;
-    position: absolute;
-    font-size: 14px;
-    color: gray;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    top: 20px;
-    left: 5px;
-    -webkit-transition: all .1s ease-in-out;
-    -moz-transition: all .1s ease-in-out;
-    -ms-transition: all .1s ease-in-out;
-    -o-transition: all .1s ease-in-out;
-    transition: all .1s ease-in-out;
-}
-.menu2-close:hover {
-    color: #fff;
-    -webkit-transition: all .1s ease-in-out;
-    -moz-transition: all .1s ease-in-out;
-    -ms-transition: all .1s ease-in-out;
-    -o-transition: all .1s ease-in-out;
-    transition: all .1s ease-in-out;
-}
-.body2-push {
-    overflow-x: hidden;
-    position: relative;
-    left: 0;
-}
-.body2-push-toright {
-    left: -200px;
-}
-.body2-push-toleft {
-    left: 200px;
-}
-.menu2, .body2-push {
-    -webkit-transition: all .3s ease;
-    -moz-transition: all .3s ease;
-    -ms-transition: all .3s ease;
-    -o-transition: all .3s ease;
-    transition: all .3s ease;
-}
-#menu2Toggle {
-    position: absolute;
-    top: 20px;
-    left: 50px;
-    z-index: 11;
-    display: block;
-    text-align: center;
-    font-size: 14px;
-    color: #fff;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    cursor: pointer;
-    background: rgba(0, 0, 0, .25);
-    -webkit-transition: all .1s ease-in-out;
-    -moz-transition: all .1s ease-in-out;
-    -ms-transition: all .1s ease-in-out;
-    -o-transition: all .1s ease-in-out;
-    transition: all .1s ease-in-out;
-}
-
-
-#menu2Toggle:hover {
-    color: #fff;
-    background: rgba(0, 0, 0, .2);
     -webkit-transition: all .1s ease-in-out;
     -moz-transition: all .1s ease-in-out;
     -ms-transition: all .1s ease-in-out;
@@ -853,7 +721,6 @@ hr {
 
 #page-content-wrapper {
     width: 100%;
-    padding: 15px;
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -915,19 +782,19 @@ hr {
 
 @media(min-width:768px) {
     #wrapper {
-        padding-left: 250px;
+        padding-left: 0px;
     }
 
     #wrapper.toggled {
-        padding-left: 0;
+        padding-left: 250px;
     }
 
     #sidebar-wrapper {
-        width: 250px;
+        width: 0px;
     }
 
     #wrapper.toggled #sidebar-wrapper {
-        width: 0;
+        width: 250px;
     }
 
     #page-content-wrapper {
@@ -936,6 +803,6 @@ hr {
 
     #wrapper.toggled #page-content-wrapper {
         position: relative;
-        margin-right: -30px;
+        margin-right: 0;
     }
 }
