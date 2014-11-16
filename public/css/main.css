@@ -862,3 +862,36 @@ hr {
         margin-right: 0;
     }
 }
+
+#gpsApproval {
+    color: white;
+    background-color: #c0392b;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    bottom: 0px;
+    z-index: 100;
+    font-size: 30px;
+    text-align: center;
+    display: table;
+    opacity: 1;
+    -webkit-transition: background 0.3s linear 0s, opacity 0.2s linear 1s;
+}
+#gpsApproval.approved {
+     background-color: #27ae60;
+     opacity: 0;
+}
+
+#gpsApproval .cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+#gpsApproval .cell h1 {
+    font-size: 30px;
+    color: white;
+}
+#gpsApproval .cell h1 i {
+    font-size: 60px;
+    color: white;
+}

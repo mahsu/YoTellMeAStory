@@ -141,6 +141,14 @@
     </div>
 </div>
 
+<div id="gpsApproval">
+    <div class="cell">
+        <div class="content">
+            <h1>Waiting for GPS permissions...</h1>
+        </div>
+    </div>
+</div>
+
 
 <!-- Bootstrap core JavaScript
   ================================================== -->
@@ -150,12 +158,14 @@
 <script src="js/main.js"></script>
 <script src="js/typed.js"></script>
 <script src="js/socket.io.js"></script>
-
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
+        navigator.geolocation.getCurrentPosition(gpsPermissionGranted, function(err) {console.log(err)}, {enableHighAccuracy: true});
+
         var socket = io();
+
         window.queue = [];
-        socket.on('data', function (data) {
+        socket.on('data', function(data){
             if (calcDistance(window.loc, data.loc) <= window.radius) {
                 var user = data.username;
                 data = data.sentence;
@@ -166,7 +176,7 @@
 
         window.canWrite = true;
 
-        setInterval(function () {
+        setInterval(function() {
             if (window.canWrite) {
                 var new_sentence = window.queue.shift();
                 if (typeof new_sentence !== "undefined") {
@@ -177,25 +187,24 @@
         }, 100);
 
         //always scrpll to bottom
-        function scrollBottom() {
-            $("html, body").animate({scrollTop: $(document).height()}, "fast");
+        function scrollBottom(){
+            $("html, body").animate({ scrollTop: $(document).height() }, "fast");
         }
-
         setInterval(scrollBottom, 750);
 
         /*var colors = ["#00CC99", "#FFD119","#000066","#33CC33","#0066FF","#990099"];
-         var colIndex = 0;*/
+        var colIndex = 0;*/
 
 
-        var insertSentence = function (sentence) {
+        var insertSentence = function(sentence) {
             var space = sentence.indexOf(" ");
             var uname = sentence.substring(0, space).toUpperCase();
             var phrase = sentence.substring(space, sentence.length);
             phrase = phrase + "  ";
 
             var el = $("#putIn");
-            var name = "name" + parseInt(Math.random() * 10000000);
-            var sent = "sent" + parseInt(Math.random() * 10000000);
+            var name = "name" + parseInt(Math.random()*10000000);
+            var sent = "sent" + parseInt(Math.random()*10000000);
             el.append("<a id ='user'><span id='" + name + "'></span></a>");
             addWord(uname.toUpperCase(), name);
 
@@ -205,30 +214,30 @@
             }, 2000);
         };
 
-        function addWord(finalWords, id) {
-            $("#" + id).typed({
+        function addWord(finalWords, id){
+            $("#"+id).typed({
                 strings: [finalWords],
                 typeSpeed: 20,
                 backSpeed: 0,
                 startDelay: 0,
                 backDelay: 0,
-                callback: function () {
+                callback: function() {
                     /*setTimeout(function() {
-                     $('.typed-cursor').css('visibility', 'hidden');
-                     }, 3000)*/
+                        $('.typed-cursor').css('visibility', 'hidden');
+                    }, 3000)*/
                 }
             });
         }
 
-        function addWords(finalWords, id) {
-            $("#" + id).typed({
+        function addWords(finalWords, id){
+            $("#"+id).typed({
                 strings: [finalWords],
                 typeSpeed: 20,
                 backSpeed: 50,
                 startDelay: 0,
                 backDelay: 2000,
-                callback: function () {
-                    setTimeout(function () {
+                callback: function() {
+                    setTimeout(function() {
                         $('.typed-cursor').css('visibility', 'hidden');
                     }, 3000);
                     window.canWrite = true;
@@ -236,7 +245,7 @@
             });
         }
 
-        window.loc = [0, 0]; //lat, lon
+        window.loc = [0,0]; //lat, lon
         window.accuracy = 0; //+/- meters
         window.radius = 1000;
 
@@ -248,7 +257,7 @@
 
         function geoSuccess(pos) {
             var crd = pos.coords;
-            window.loc = [crd.latitude, crd.longitude];
+            window.loc = [crd.latitude,crd.longitude];
             console.log(window.loc);
             window.accuracy = crd.accuracy;
 
@@ -256,21 +265,20 @@
                 url: "/location",
                 data: {'lat': window.loc[0], 'lon': window.loc[1]},
                 type: "get",
-                success: function (data) {
+                success: function(data) {
                     console.log(data);
                     if (data.length > 0) {
-                        for (var i = data.length - 1; i >= 0; i--) {
+                        for (var i=data.length-1; i>=0; i--) {
                             var yloc = data[i].loc;
                             var yrelatedword = data[i].relatedword;
                             var sentence = data[i].sentence;
                             var username = data[i].username;
                             if (calcDistance(window.loc, yloc) <= window.radius && sentence != "") {
-                                console.log(sentence);
                                 window.queue.push(data[i].sentence);
                             }
                         }
-                    }
                 }
+                    }
             });
 
         }
@@ -292,18 +300,27 @@
             var angle1 = lat1 * Math.PI / 180;
             var angle2 = lat2 * Math.PI / 180;
 
-            var deltaAngle = (lat2 - lat1) * Math.PI / 180;
-            var deltaLong = (lon2 - lon1) * Math.PI / 180;
+            var deltaAngle = (lat2-lat1) * Math.PI / 180;
+            var deltaLong = (lon2-lon1)  * Math.PI / 180;
 
-            var a = Math.sin(deltaAngle / 2) * Math.sin(deltaAngle / 2) +
+            var a = Math.sin(deltaAngle/2) * Math.sin(deltaAngle/2) +
                     Math.cos(angle1) * Math.cos(angle2) *
-                    Math.sin(deltaLong / 2) * Math.sin(deltaLong / 2);
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    Math.sin(deltaLong/2) * Math.sin(deltaLong/2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             return R * c;
         }
-    });
 
+    }());
 
+    function gpsPermissionGranted(position) {
+        $('#gpsApproval h1').html('<i class="fa fa-thumbs-o-up"></i>');
+        $('#gpsApproval').addClass('approved');
+        setTimeout(function () {
+            $('#gpsApproval').css('zIndex', '-1')
+        }, 1200);
+        //console.log(position.coords.latitude + ', ' + position.coords.longitude);
+
+    }
 
     $("#menu-toggle").click(function (e) {
         e.preventDefault();
@@ -317,21 +334,13 @@
     });
 
 
-    (function (i, s, o, g, r, a, m) {
-        i['GoogleAnalyticsObject'] = r;
-        i[r] = i[r] || function () {
-            (i[r].q = i[r].q || []).push(arguments)
-        }, i[r].l = 1 * new Date();
-        a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-        a.async = 1;
-        a.src = g;
-        m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
     ga('create', 'UA-56798911-1', 'auto');
     ga('send', 'pageview');
 
 </script>
-
 </body>
 </html>
