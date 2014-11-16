@@ -74,11 +74,15 @@ function getPos(str, finished) {
 }
 
 function Markov(text, callback) {
+    text = text.replace(/(\r\n|\n|\r)/gm," ");
+    var text = text.match(/[^\.!\?]+[\.!\?]+/g);
     //text = text.split(".");
     //text = text.match(/[^\.!\?]+[\.!\?]+/g);
     this.seed = [];
+    var totalWords = 0;
     for (var i = 0; i < text.length; i++) {
         var wordList = text[i].trim().split(" ");
+        totalWords += wordList.length-2;
         this.seed[i] = wordList.slice(0);
     }
     this.elements = [];  //words in graph
@@ -90,9 +94,26 @@ function Markov(text, callback) {
         callback();
     });*/
 
-    this.loopAdd2(0, 0, this.seed, function(obj) {
+    /*this.loopAdd2(0, 0, this.seed, function(obj) {
         callback(obj);
-    });
+    });*/
+    var counter = 0;
+    function incrementCounter(o) {
+        counter++;
+        if (counter == totalWords) {
+            callback(o);
+        }
+    }
+    for (var i = 0; i < this.seed.length; i++) {
+        if (this.seed[i].length > 1) {
+            for (var j = 0; j < this.seed[i].length - 2; j++) {
+                //console.log(this.seed[i][j] + " " + this.seed[i][j + 1] + " " + this.seed[i][j + 2]);
+                this.add2(this.seed[i][j], this.seed[i][j + 1], this.seed[i][j + 2], function(o) {
+                    incrementCounter(o);
+                });
+            }
+        }
+    }
 
     /*var that = this;
      async.series([
@@ -116,7 +137,7 @@ function Markov(text, callback) {
      }
      }*/
 }
-
+/*
 Markov.prototype.loopAdd = function(i, j, sentences, callback) {
     var that = this;
     if (i < sentences.length) {
@@ -150,10 +171,10 @@ Markov.prototype.loopAdd2 = function(i, j, sentences, callback) {
             return that.loopAdd2(i, j, sentences, callback);
         }
     } else {
-        return callback(that);
+        return callback();
     }
 };
-
+*/
 /* add str2 to end of str1*/
 Markov.prototype.add = function (str1, str2, callback) {
     var n1 = this.find(str1.trim());
@@ -214,7 +235,7 @@ Markov.prototype.add2 = function (str1, str2, str3, callback) {
     n1.addChild2(n2, n3);
     n1.addChild(n2);
     n2.addChild(n3);
-    return callback();
+    return callback(markov);
 };
 
 Markov.prototype.find = function (str) {

@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var async = require('async');
 var debug = require('debug')('YoStory');
-
 var fs = require('fs');
 
 var app = express();
@@ -92,27 +91,20 @@ async.waterfall([
     },
     function (res, done) {
         console.log("Setting up Markov chain.");
-        /*
         fs.readFile('./wildgarden.txt', function (err, data) {
-                if (err) {
-                    throw err;
-                }
-                var words = data.toString().replace(/(\r\n|\n|\r)/gm," ");
-                var word_arr = words.match(/[^\.!\?]+[\.!\?]+/g);
-                new Markov(word_arr, function(o) {
-                    console.log("Done.");
-                    GLOBAL.markov = o;
-                    done(null, res);
-                })
+            if (err) {
+                throw err;
+            }
+            var words = data.toString();
+            new Markov(words, function(o){
+                GLOBAL.markov = o;
+                console.log("Done.");
+                done(null, res);
+            });
         });
-        */
-        GLOBAL.markov = new Markov("I like to meow.", function() {
-            console.log("Done.");
-            done(null, res);
-        })
     },
     function (res, done) {
-        console.log("Setiting up routes.");
+        console.log("Setting up routes.");
         setupRoutes(function () {
             console.log("Done.");
             done(null, null);

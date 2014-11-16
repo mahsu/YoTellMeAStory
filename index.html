@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="shortcut icon" href="assets/img/favicon.ico" >
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="assets/ico/favicon.png">
+
+    <title>YO! Tell Me a Story</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="assets/css/main.css" rel="stylesheet">
+    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+  
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="assets/js/modernizr.custom.js"></script>
+    
+  </head>
+
+  <body>
+
+  <nav class="menu" id="theMenu">
+    <div class="menu-wrap">
+      <h1 class="logo"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">HELP</button></h1>
+      <i class="fa fa-arrow-right menu-close"></i>
+    </div>
+   <!-- Menu button -->
+    <div id="menuToggle"><i class="fa fa-bars"></i></div>
+  </nav>
+
+  <div id="headerwrap">
+    <div class="container">
+      <div class="row centered">
+        <div class="col-lg-12">
+          <h1>Yo</h1>
+          <h2>Tell Me a Story</h2>
+        </div><!--/.col-lg-12 -->
+      </div><!--/.row -->
+    </div><!--/.container -->
+  </div><!--/.#headerwrap -->
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="myModalLabel">About "YO, Tell Me a Story"</h4>
+        </div>
+        <div class="modal-body">
+          <b> What It Does </b> <br>
+          Ever wanted to make your own mad-libs stories on the spot? Now Yo' can! All you need to do is tell others to Yo to this room, and you each of your usernames will be used to make a story beyond your wildest imaginations! <br> <br> 
+          <b> How It Works </b> <br>
+          Using each of your usernames, we look to see what words we could possibly make (even with the wildest names)! And then, the magic happens: we figure out the best words to fit between all your "names," producing all the wacky stories you see here! <br> <br>
+          <b> Details Of Operation </b> <br>
+          To develop different stories, the app currently relies on your location, determining the story only based upon the people in your immediate neighborhood, instead of having everyone in a single room. Move around, and join different adventures!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <a href="http://www.justyo.co/" target="_blank"><button type="button" class="btn btn-primary">What's Yo?</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+
+  <div class = "container">
+    <div class = "row">
+      <div class="col-md-12 col-xs-12">
+        <a id="putIn">
+        </a>
+        <a id="cursor">
+          <span class="typed-cursor" style="visibility: visible;">|</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/typed.js"></script>
+  
+  <script>
+  var latVal;
+  var longVal;
+  var newLength;
+    $(document).ready(function() {
+      var username = "sample321";
+      var relevant = "sample";
+      var sentence = "I enjoy eating poop on the side oh yes I do";
+
+      var colors = ["#00CC99", "#FFD119","#000066","#33CC33","#0066FF","#990099"];
+      var colIndex = 0;
+      
+      var isUsername = true;
+
+      if (navigator.geolocation) {
+          var locator = navigator.geolocation.getCurrentPosition(showPosition);
+      } else { }
+
+      $.ajax({
+        url: "/yo/location",
+        data: {lat: latVal, lon: longVal},
+        type: "get",
+        success: function(data) {
+          successmessage = 'Data was succesfully captured';
+          $("label#successmessage").text(successmessage);
+        }
+      });
+
+      
+      var words = [];
+      words[0] = relevant.toUpperCase();
+
+      var j = 0;
+      var split = sentence.split(" ");
+      while (split[j] != null) {
+        words.push(split[j]);
+        j++;
+      }
+ 
+      $("#putIn").append("<a id =\"user\"><span id=\"attendeeNoun1\"></span></a>") ;
+      addWord(relevant.toUpperCase());
+
+      $("#putIn").append("<a id =\"nonUser\"><span id=\"attendeeNoun2\"></span></a>") ;
+      setTimeout(function() {
+              addWords(" " + sentence);
+            }, 2000)
+
+      function addWord(finalWords){
+        $("#attendeeNoun1").typed({
+          strings: [finalWords],
+          typeSpeed: 20,
+          backSpeed: 50,
+          startDelay: 0,
+          backDelay: 2000,
+          callback: function() {
+            setTimeout(function() {
+              $('.typed-cursor').css('visibility', 'hidden');
+            }, 2000 * words.length)
+          }
+        });
+      }
+
+      function addWords(finalWords){
+        $("#attendeeNoun2").typed({
+          strings: [finalWords],
+          typeSpeed: 20,
+          backSpeed: 50,
+          startDelay: 0,
+          backDelay: 2000,
+          callback: function() {
+            setTimeout(function() {
+              $('.typed-cursor').css('visibility', 'hidden');
+            }, 3000)
+          }
+        });
+      }
+
+  function showPosition(position) {
+      latVal = position.coords.latitude;
+      longVal = position.coords.longitude; 
+      distance(50, 40, 42, 53);
+  } 
+
+  function distance(lat1, lon1, lat2, lon2) {
+    var R = 6371; // km 
+    var angle1 = lat1 * Math.PI / 180;
+    var angle2 = lat2 * Math.PI / 180;
+
+    var deltaAngle = (lat2-lat1) * Math.PI / 180;
+    var deltaLong = (lon2-lon1)  * Math.PI / 180;
+
+    var a = Math.sin(deltaAngle/2) * Math.sin(deltaAngle/2) +
+            Math.cos(angle1) * Math.cos(angle1) *
+            Math.sin(deltaLong/2) * Math.sin(deltaLong/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c;
+    alert(d);
+  }
+
+    showLogin = function(){
+      $("#loginModal").modal({
+        show: true
+      });
+    };
+
+  }());
+
+  </script>
+  </body>
+</html>
