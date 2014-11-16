@@ -169,7 +169,7 @@
                 var user = data.username;
                 var d = data.sentence;
                 updateUsername(user);
-                console.log(d);
+                //console.log(d);
                 window.queue.push(d);
 
             }
@@ -185,6 +185,8 @@
                     insertSentence(new_sentence);
                 }
             }
+            else
+                $("html, body").animate({ scrollTop: $(document).height() }, "fast"); //scroll to bottom
         }, 100);
 
 
@@ -212,7 +214,7 @@
         };
 
         function addWord(finalWords, id){
-            $("html, body").animate({ scrollTop: $(document).height() }, "fast"); //scroll to bottom
+
             $("#"+id).typed({
                 strings: [finalWords],
                 typeSpeed: 20,
@@ -228,7 +230,6 @@
         }
 
         function addWords(finalWords, id){
-            $("html, body").animate({ scrollTop: $(document).height() }, "fast"); //scroll to bottom
             $("#"+id).typed({
                 strings: [finalWords],
                 typeSpeed: 20,
@@ -265,7 +266,7 @@
                 data: {'lat': window.loc[0], 'lon': window.loc[1]},
                 type: "get",
                 success: function(data) {
-                    console.log(data);
+                    //console.log(data);
                     if (data.length > 0) {
                         for (var i=0; i<data.length; i++) {
                             var yloc = data[i].loc;
