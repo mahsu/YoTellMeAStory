@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="shortcut icon" href="assets/img/favicon.ico" >
+    <link rel="shortcut icon" href="img/favicon.ico" >
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="assets/ico/favicon.png">
+    <link rel="shortcut icon" href="ico/favicon.png">
 
     <title>YO! Tell Me a Story</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="assets/css/main.css" rel="stylesheet">
-    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
 
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
@@ -28,7 +28,7 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 
-    <script src="assets/js/modernizr.custom.js"></script>
+    <script src="js/modernizr.custom.js"></script>
 
 </head>
 
@@ -97,9 +97,9 @@
   ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
-<script src="assets/js/main.js"></script>
-<script src="assets/js/typed.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/typed.js"></script>
 
 <script>
     var latVal;
@@ -147,23 +147,6 @@
         function showPosition(position) {
             latVal = position.coords.latitude;
             longVal = position.coords.longitude;
-            distance(50, 40, 42, 53);
-        }
-
-        function distance(lat1, lon1, lat2, lon2) {
-            var R = 6371; // km
-            var angle1 = lat1 * Math.PI / 180;
-            var angle2 = lat2 * Math.PI / 180;
-
-            var deltaAngle = (lat2-lat1) * Math.PI / 180;
-            var deltaLong = (lon2-lon1)  * Math.PI / 180;
-
-            var a = Math.sin(deltaAngle/2) * Math.sin(deltaAngle/2) +
-                    Math.cos(angle1) * Math.cos(angle2) *
-                    Math.sin(deltaLong/2) * Math.sin(deltaLong/2);
-            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            var d = R * c;
-            alert(d);
         }
 
         showLogin = function(){
