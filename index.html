@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="shortcut icon" href="assets/img/favicon.ico" >
+    <link rel="shortcut icon" href="public/img/favicon.ico" >
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="assets/ico/favicon.png">
+    <link rel="shortcut icon" href="public/ico/favicon.png">
 
     <title>YO! Tell Me a Story</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
-
+    <link href="public/css/bootstrap.css" rel="stylesheet">
+    <link href="public/css/simple-sidebar.css" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link href="assets/css/main.css" rel="stylesheet">
-    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
+    <link href="public/css/main.css" rel="stylesheet">
+    <link href="public/css/font-awesome.min.css" rel="stylesheet">
   
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,700' rel='stylesheet' type='text/css'>
@@ -28,7 +28,7 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
     
-    <script src="assets/js/modernizr.custom.js"></script>
+    <script src="public/js/modernizr.custom.js"></script>
     
   </head>
 
@@ -42,6 +42,33 @@
    <!-- Menu button -->
     <div id="menuToggle"><i class="fa fa-bars"></i></div>
   </nav>
+
+  <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="#">
+                        YO Story Stars
+                    </a>
+                </li>
+                <li><a href="#">User 1</a></li>
+                <li><a href="#">User 2</a></li>
+                <li><a href="#">User 3</a></li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="col-md-8 col-xs-8">
+                  <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fa fa-bars"></i></a>
+                </div>
+            </div>
+        </div>
+<!-- /#page-content-wrapper -->
+
+    </div>
 
   <div id="headerwrap">
     <div class="container">
@@ -95,9 +122,9 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/typed.js"></script>
+    <script src="public/js/bootstrap.min.js"></script>
+    <script src="public/js/main.js"></script>
+    <script src="public/js/typed.js"></script>
   
   <script>
   var latVal;
@@ -206,6 +233,10 @@
 
   }());
 
+  $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
   </script>
   </body>
 </html>
