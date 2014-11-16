@@ -257,6 +257,21 @@ hr {
     transition: all .1s ease-in-out;
 }
 
+#menu-toggle {
+    padding: 0px;
+    border: none;
+    outline: none;
+}
+
+#menu-toggle i {
+    font-size: 30px;
+    width: 40px;
+    height: 40px;
+    position: relative;
+    bottom: -5px;
+    color: rgba(115, 63, 122, 1);
+}
+
 .menu-wrap > .logo > .btn {
     color: white;
     margin: 0px;
@@ -308,7 +323,9 @@ hr {
     font-size: 180px;
     font-weight: 900;
     letter-spacing: 3px;
-    text-shadow: 2px 2px #000000;
+    margin-bottom: -20px;
+    margin-top: 50px;
+    /*text-shadow: 2px 2px #000000;*/
 }
 
 #headerwrap h2 {
@@ -316,7 +333,9 @@ hr {
     font-size: 50px;
     font-weight: 100;
     letter-spacing: 2px;
-    text-shadow: 2px 1px #000000;
+    text-decoration: underline;
+    margin-top: 0px;
+    /*text-shadow: 2px 1px #000000;*/
 }
 #headerwrap i {
     font-size: 35px;
@@ -704,12 +723,12 @@ hr {
   font-size: 45px; 
   font-weight: 200;
   letter-spacing: 1px;
-  text-shadow: 2px 2px #000000;
+  /*text-shadow: 2px 2px #000000;*/
 }
 
 #user {
-  color: white; 
-  background-color: red;
+  color: rgb(73, 249, 135);
+  /*background-color: red;*/
   text-align: center; 
   font-weight: 900; 
   width:100%; 
@@ -721,7 +740,7 @@ hr {
   font-size: 45px; 
   font-weight: 900;
   letter-spacing: 1px;
-  text-shadow: 2px 2px #000000;
+  /*text-shadow: 2px 2px 5px #000000;*/
 }
 
 #wrapper {
