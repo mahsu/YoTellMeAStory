@@ -61,9 +61,9 @@ exports.cycleTraverse2 = nodeunit.testCase({
             test.done();
         });
     }
-});
+});*/
 
-exports.largeTraverse2 = nodeunit.testCase({
+exports.largeTraverse = nodeunit.testCase({
     "setUp": function (callback) {
         console.log("setting up");
         fs.readFile('../test.txt', function (err, data) {
@@ -92,7 +92,7 @@ exports.largeTraverse2 = nodeunit.testCase({
     }
 });
 
-exports.largeTraverse3 = nodeunit.testCase({
+exports.largeTraverse2 = nodeunit.testCase({
     "setUp": function (callback) {
         console.log("setting up");
         fs.readFile('../wildgarden.txt', function (err, data) {
