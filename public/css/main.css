@@ -780,11 +780,12 @@ hr {
 
 #page-content-wrapper {
     width: 100%;
+    position: fixed!important;
 }
 
 #wrapper.toggled #page-content-wrapper {
-    position: absolute;
-    position: fixed;
+    /*position: absolute;*/
+    position: fixed!important;
     margin-right: -250px;
 }
 
