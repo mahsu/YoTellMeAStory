@@ -109,7 +109,7 @@
 
 <div class = "container">
     <div class = "row">
-        <div class="col-md-12 col-xs-12">
+        <div id="story" class="col-md-12 col-xs-12">
             <a id="putIn">
             </a>
             <a id="cursor">
@@ -152,10 +152,17 @@
                     insertSentence(new_sentence);
                 }
             }
-        }, 500);
+        }, 100);
+
+        //always scrpll to bottom
+        function scrollBottom(){
+            $("html, body").animate({ scrollTop: $(document).height() }, "fast");
+        }
+        setInterval(scrollBottom, 750);
 
         /*var colors = ["#00CC99", "#FFD119","#000066","#33CC33","#0066FF","#990099"];
         var colIndex = 0;*/
+
 
         var insertSentence = function(sentence) {
             console.log(sentence);
