@@ -303,6 +303,7 @@ Markov.prototype.traverse = function (start, maxDepth, callback) {
         console.log('WORD NOT FOUND');
 		getPos(start, function(pos) {
             pos = pos[0];
+            console.log(pos);
             var lst=[];
             switch(pos) {
                 case 'N':
@@ -322,6 +323,7 @@ Markov.prototype.traverse = function (start, maxDepth, callback) {
                     break;
             }
             start = lst[parseInt(lst.length*Math.random())];
+            console.log("using: " + start);
             found = that.find(start);
         });
     }
@@ -335,6 +337,7 @@ Markov.prototype.traverse = function (start, maxDepth, callback) {
             var currentNode = second;
             while (currentDepth < maxDepth) {
                 chain.push(currentNode.val);
+                console.log(chain);
                 var nextNode = currentNode.next2(prevNode);
                 if (nextNode == false) {
                     break;
@@ -345,6 +348,7 @@ Markov.prototype.traverse = function (start, maxDepth, callback) {
             }
         }
     }
+    console.log("returning");
     callback(chain.join(" "));
 };
 
