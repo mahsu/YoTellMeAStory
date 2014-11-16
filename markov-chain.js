@@ -98,7 +98,7 @@ function Markov(text, callback) {
     //text = text.split(".");
     //text = text.match(/[^\.!\?]+[\.!\?]+/g);
     this.seed = [];
-	this.nouns = [];
+	this.nouns = ['person', 'time', 'day'];
 	this.verbs = ['was','is'];
 	this.dets = ['a','the','an','his','her','that','this'];
     var totalWords = 0;
@@ -297,33 +297,36 @@ Markov.prototype.find = function (str) {
 Markov.prototype.traverse = function (start, maxDepth, callback) {
     if (maxDepth == null) {maxDepth = 20;}
     var chain = [];
-    start = this.find(start);
-	if (start == false) {
+    var found = this.find(start);
+    var that = this;
+	if (found == false) {
 		getPos(start, function(pos) {
             pos = pos[0];
-            var lst;
+            var lst=[];
             switch(pos) {
                 case 'N':
                 case 'AV':
                     chain.push('The');
-                    chain.push(start.val);
-                    lst = this.verbs;
+                    chain.push(start);
+                    lst = that.verbs;
                     break;
                 case 'A':
                 case 'Det':
-                    chain.push(start.val);
-                    lst = this.nouns;
+                    chain.push(start);
+                    lst = that.nouns;
                     break;
                 case 'V':
-                    chain.push(start.val);
-                    lst = this.dets;
+                    chain.push(start);
+                    lst = that.dets;
                     break;
             }
-            start = lst[lst.length*Math.random()];
+            start = lst[parseInt(lst.length*Math.random())];
+            found = that.find(start);
         });
     }
-	if (start != false) {
-        chain.push(start.val);
+	if (found != false) {
+        chain.push(start);
+        start = found;
         var second = start.next();
         if (second != false) {
             var currentDepth = 1;
