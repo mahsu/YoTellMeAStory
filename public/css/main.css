@@ -122,7 +122,7 @@ hr {
 }
 .menu-wrap {
     position: absolute;
-    top: 40px;
+    top: 20px;
     left: 60px;
     background: #8e44ad;
     width: 200px;
@@ -130,6 +130,24 @@ hr {
     opacity: 60%;
 }
 
+.menu h1 {
+    margin: 0px;
+    height: 40px;
+}
+
+.menu h1 i {
+    font-size: 25px;
+    cursor: pointer;
+    display: inline-block;
+    height: 40px;
+    width: 60px;
+    line-height: 40px;
+    top: -3px;
+    position: relative;
+    text-align: center;
+    color: white;
+}
+/*
 .menu h1.logo a {
     font-family: Raleway, Helvetica, Arial, sans-serif;
     font-size: 16px;
@@ -142,11 +160,12 @@ hr {
 }
 .menu h1.logo a:hover {
     color: #1abc9c;
-}
+}*/
 .menu img.logo {
     margin: 20px 0;
     max-width: 160px;
 }
+/*
 .menu a {
     margin-left: 20px;
     color: gray;
@@ -173,18 +192,18 @@ hr {
     font-size: 14px;
     line-height: 40px;
     margin: 25px 2px;
-}
+}*/
 .menu-close {
     cursor: pointer;
     display: block;
-    position: absolute;
-    font-size: 14px;
-    color: gray;
+    /*position: absolute;*/
+    /*font-size: 14px;*/
+    /*color: gray;
     width: 40px;
     height: 40px;
     line-height: 40px;
-    top: 20px;
-    right: 5px;
+    top: 10px;
+    right: 5px;*/
     -webkit-transition: all .1s ease-in-out;
     -moz-transition: all .1s ease-in-out;
     -ms-transition: all .1s ease-in-out;
@@ -219,7 +238,7 @@ hr {
 }
 #menuToggle {
     position: absolute;
-    top: 60px;
+    top: 20px;
     left: 0;
     z-index: 11;
     display: block;
@@ -236,6 +255,24 @@ hr {
     -ms-transition: all .1s ease-in-out;
     -o-transition: all .1s ease-in-out;
     transition: all .1s ease-in-out;
+}
+
+.menu-wrap > .logo > .btn {
+    color: white;
+    margin: 0px;
+    padding: 0px;
+    outline: 0px;
+    border: 0px;
+}
+.menu-wrap > .logo > .btn:hover {
+    text-decoration: none;
+}
+.menu-wrap > .logo > i {
+    color: white;
+}
+
+#page-content-wrapper {
+    padding: 20px;
 }
 
 #social {   
@@ -689,7 +726,7 @@ hr {
 
 #wrapper {
     padding-left: 0;
-
+    position: absolute;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;

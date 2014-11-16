@@ -16,7 +16,6 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/main.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
 
     <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic' rel='stylesheet' type='text/css'>
@@ -29,6 +28,8 @@
     <![endif]-->
 
     <script src="js/modernizr.custom.js"></script>
+    <script src="js/main.js"></script>
+    <link href="css/main.css" rel="stylesheet">
 
 </head>
 
@@ -36,8 +37,17 @@
 
 <nav class="menu" id="theMenu">
     <div class="menu-wrap">
-        <h1 class="logo"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">HELP</button></h1>
-        <i class="fa fa-arrow-right menu-close"></i>
+        <h1 class="logo">
+            <!--
+            HELP
+            -->
+            <a href="https://github.com/mahsu/YoTellMeAStory"><i class="fa fa-github-square"></i></a>
+            <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal">
+                <i class="fa fa-question-circle"></i>
+            </button>
+            <i class="fa fa-chevron-right menu-close"></i>
+        </h1>
+
     </div>
     <!-- Menu button -->
     <div id="menuToggle"><i class="fa fa-bars"></i></div>
@@ -47,15 +57,12 @@
 
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
+        <ul class="sidebar-nav" id="user-container">
             <li class="sidebar-brand">
                 <a href="#">
                     YO Story Stars
                 </a>
             </li>
-            <li><a href="#">User 1</a></li>
-            <li><a href="#">User 2</a></li>
-            <li><a href="#">User 3</a></li>
         </ul>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -136,6 +143,7 @@
         var queue = [];
         socket.on('data', function(data){
             var user = data.username;
+            $('#user-container').append("<li href='#'>" + user + "</li>");
             data = data.sentence;
             queue.push(data);
         });
@@ -269,6 +277,11 @@
         }
 
     }());
+
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $('#wrapper').toggleClass("toggled");
+    });
 
 </script>
 </body>
