@@ -135,15 +135,15 @@
 
         var queue = [];
         socket.on('data', function(data){
-            console.log(data);
+            var user = data.username;
+            data = data.sentence;
             var space = data.indexOf(" ");
             var name = data.substring(0, space).toUpperCase();
             var sentence = data.substring(space, data.length());
             queue.push([name, sentence]);
         });
 
-        var canWrite = false;
-        insertSentence("Yo", "send a YO and continue the story!");
+        var canWrite = true;
 
         setInterval(function() {
             if (canWrite) {
@@ -236,19 +236,6 @@
         if (navigator.geolocation.getCurrentPosition)
             navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
 
-
-        $("#attendeeNoun").typed({
-            strings: [newLength],
-            typeSpeed: 20,
-            backSpeed: 50,
-            startDelay: 0,
-            backDelay: 2000,
-            callback: function() {
-                setTimeout(function() {
-                    $('.typed-cursor').css('visibility', 'hidden');
-                }, 3000)
-            }
-        });
 
         function calcDistance(loc1, loc2) {
             var lat1 = loc1[0];
