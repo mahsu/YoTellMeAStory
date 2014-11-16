@@ -240,7 +240,7 @@
             window.accuracy = crd.accuracy;
 
             $.ajax({
-                url: "/yo/location",
+                url: "/location",
                 data: {'lat': window.loc[0], 'lon': window.loc[1]},
                 type: "get",
                 success: function(data) {
@@ -306,6 +306,5 @@
 
 </script>
 
-</script>
 </body>
 </html>

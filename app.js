@@ -35,9 +35,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 function setupRoutes(callback) {
     var yo = require('./routes/yo');
     var routes = require('./routes/index');
+    var location = require('./routes/location');
     app.use('/', routes);
     app.use((process.env.YO_URL || '/yo'), yo);
-    app.use('/location/', routes);
+    app.use('/location/', location);
 
     // catch 404 and forward to error handler
     app.use(function (req, res, next) {
