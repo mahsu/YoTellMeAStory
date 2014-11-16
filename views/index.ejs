@@ -28,7 +28,6 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
 
-    <script src="js/modernizr.custom.js"></script>
 
 </head>
 
@@ -133,32 +132,36 @@
     $(document).ready(function() {
         var socket = io();
 
-        var queue = [];
+        window.queue = [];
         socket.on('data', function(data){
-            var user = data.username;
-            data = data.sentence;
-            queue.push(data);
+            if (calcDistance(window.loc, data.loc) <= window.radius) {
+                var user = data.username;
+                data = data.sentence;
+                window.queue.push(data.sentence);
+            }
         });
 
-        var canWrite = true;
+        window.canWrite = true;
 
         setInterval(function() {
-            if (canWrite) {
-                var new_sentence = queue.shift();
-                if (typeof(new_sentence) != "undefined") {
-                    canWrite = false;
+            if (window.canWrite) {
+                var new_sentence = window.queue.shift();
+                if (typeof new_sentence !== "undefined") {
+                    console.log("test");
+                    window.canWrite = false;
                     insertSentence(new_sentence);
                 }
             }
-        }, 100);
+        }, 500);
 
         /*var colors = ["#00CC99", "#FFD119","#000066","#33CC33","#0066FF","#990099"];
         var colIndex = 0;*/
 
-        function insertSentence(sentence) {
+        var insertSentence = function(sentence) {
+            console.log(sentence);
             var space = sentence.indexOf(" ");
             var uname = sentence.substring(0, space).toUpperCase();
-            var phrase = sentence.substring(space, sentence.length());
+            var phrase = sentence.substring(space, sentence.length);
 
             var el = $("#putIn");
             var name = "name" + parseInt(Math.random()*10000000);
@@ -170,7 +173,7 @@
             setTimeout(function () {
                 addWords(" " + phrase, sent);
             }, 2000);
-        }
+        };
 
         function addWord(finalWords, id){
             $("#"+id).typed({
@@ -198,7 +201,7 @@
                     setTimeout(function() {
                         $('.typed-cursor').css('visibility', 'hidden');
                     }, 3000);
-                    canWrite = true;
+                    window.canWrite = true;
                 }
             });
         }
@@ -226,13 +229,14 @@
                 success: function(data) {
                     console.log(data);
                     if (data.length > 0) {
-                        for (i=0; i<data.length; i++) {
+                        for (var i=data.length-1; i>=0; i--) {
                             var yloc = data[i].loc;
                             var yrelatedword = data[i].relatedword;
                             var sentence = data[i].sentence;
                             var username = data[i].username;
                             if (calcDistance(window.loc, yloc) <= window.radius && sentence != "") {
-                                insertSentence(sentence);
+                                console.log(sentence);
+                                window.queue.push(data[i].sentence);
                             }
                         }
                 }
