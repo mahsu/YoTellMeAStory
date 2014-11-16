@@ -142,18 +142,7 @@
       
       var isUsername = true;
 
-      if (navigator.geolocation) {
-          var locator = navigator.geolocation.getCurrentPosition(showPosition);
-      } else { }
 
-      $.ajax({
-        url: "/yo/location",
-        data: {lat: latVal, lon: longVal},
-        type: "get",
-        success: function(data) {
-          successmessage = 'Data was succesfully captured';
-          $("label#successmessage").text(successmessage);
-        }
       });
 
       

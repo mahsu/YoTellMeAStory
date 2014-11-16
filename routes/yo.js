@@ -37,7 +37,7 @@ router.get('/location', function(req, res) {
 
         if (err) {console.log(err);}
 
-        results[0]._doc.sentence = "";
+        //results[0]._doc.sentence = "";
         res.send(results);
     });
 

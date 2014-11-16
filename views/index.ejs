@@ -43,6 +43,35 @@
     <div id="menuToggle"><i class="fa fa-bars"></i></div>
 </nav>
 
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#">
+                    YO Story Stars
+                </a>
+            </li>
+            <li><a href="#">User 1</a></li>
+            <li><a href="#">User 2</a></li>
+            <li><a href="#">User 3</a></li>
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="fa fa-bars"></i></a>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+
 <div id="headerwrap">
     <div class="container">
         <div class="row centered">
@@ -82,8 +111,7 @@
 <div class = "container">
     <div class = "row">
         <div class="col-md-12 col-xs-12">
-            <a id="user">
-                <span id="attendeeNoun"></span>
+            <a id="putIn">
             </a>
             <a id="cursor">
                 <span class="typed-cursor" style="visibility: visible;">|</span>
@@ -102,26 +130,81 @@
 <script src="js/typed.js"></script>
 <script src="js/socket.io.js"></script>
 <script>
-
     $(document).ready(function() {
         var socket = io();
+
+        var queue = [];
         socket.on('data', function(data){
             console.log(data);
+            var space = data.indexOf(" ");
+            var name = data.substring(0, space).toUpperCase();
+            var sentence = data.substring(space, data.length());
+            queue.push([name, sentence]);
         });
+
+        var canWrite = false;
+        insertSentence("Yo", "send a YO and continue the story!");
+
+        setInterval(function() {
+            if (canWrite) {
+                var new_sentence = queue.shift();
+                if (typeof(new_sentence) != "undefined") {
+                    canWrite = false;
+                    insertSentence(new_sentence[0], new_sentence[1]);
+                }
+            }
+        }, 100);
+
+        /*var colors = ["#00CC99", "#FFD119","#000066","#33CC33","#0066FF","#990099"];
+        var colIndex = 0;*/
+
+        function insertSentence(uname, sentence) {
+            var el = $("#putIn");
+            var name = "name" + parseInt(Math.random()*10000000);
+            var sent = "sent" + parseInt(Math.random()*10000000);
+            el.append("<a id ='user'><span id='" + name + "'></span></a>");
+            addWord(uname.toUpperCase(), name);
+
+            el.append("<a id ='nonUser'><span id='" + sent + "'></span></a>");
+            setTimeout(function () {
+                addWords(" " + sentence, sent);
+            }, 2000);
+        }
+
+        function addWord(finalWords, id){
+            $("#"+id).typed({
+                strings: [finalWords],
+                typeSpeed: 20,
+                backSpeed: 0,
+                startDelay: 0,
+                backDelay: 0,
+                callback: function() {
+                    /*setTimeout(function() {
+                        $('.typed-cursor').css('visibility', 'hidden');
+                    }, 3000)*/
+                }
+            });
+        }
+
+        function addWords(finalWords, id){
+            $("#"+id).typed({
+                strings: [finalWords],
+                typeSpeed: 20,
+                backSpeed: 50,
+                startDelay: 0,
+                backDelay: 2000,
+                callback: function() {
+                    setTimeout(function() {
+                        $('.typed-cursor').css('visibility', 'hidden');
+                    }, 3000);
+                    canWrite = true;
+                }
+            });
+        }
 
         window.loc = [0,0]; //lat, lon
         window.accuracy = 0; //+/- meters
         window.radius = 1000;
-
-        var username = "sample321";
-        var relevant = "sample";
-        var sentence = "I enjoy eating poop on the side oh yes I do";
-        var newLength = relevant.toUpperCase() + " " + sentence;
-
-        var colors = ["#00CC99", "#FFD119","#000066","#33CC33","#0066FF","#990099"];
-        var colIndex = 0;
-
-        var isUsername = true;
 
         var geoOptions = {
             enableHighAccuracy: true,
