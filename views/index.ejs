@@ -238,7 +238,9 @@
                     /*setTimeout(function() {
                         $('.typed-cursor').css('visibility', 'hidden');
                     }, 3000);*/
-                    window.canWrite = true;
+                    setTimeout(function() {
+                        window.canWrite = true;
+                    }, 500);
                 }
             });
         }
